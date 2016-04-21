@@ -211,7 +211,7 @@ namespace FastQueryStock.ViewModels
                             if (_pttRecordMap.ContainsKey(chengArticle.Url))
                                 return;
                             _pttRecordMap.Add(chengArticle.Url, chengArticle);
-                            NotificationTip.Show("PTT", string.Format("PTT股板 [{0}] 發文通知!", articles.Last().Author), articles.Last().Title);
+                            NotificationTip.Show(string.Format("PTT股板 [{0}] 發文通知!", articles.Last().Author), articles.Last().Title);
                         }
                     }
                     catch (Exception e)

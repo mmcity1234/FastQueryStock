@@ -11,13 +11,18 @@ namespace FastQueryStock.Controls
     public class NotificationTip
     {
         static NotifyIcon notifyIcon = new NotifyIcon();
-        public static void Show(string text, string balloonTitle, string balloonText)
+        static NotificationTip()
+        {
+            notifyIcon.Visible = true;
+            notifyIcon.Icon = new System.Drawing.Icon(Path.GetFullPath(@"Images\stockicon.ico"));
+            notifyIcon.Text = "FastQueryStock.Application";
+        }
+
+        
+        public static void Show(string balloonTitle, string balloonText)
         {
             try
-            {
-                notifyIcon.Visible = true;
-                notifyIcon.Icon = new System.Drawing.Icon(Path.GetFullPath(@"Images\stockicon.ico"));
-                notifyIcon.Text = text;
+            {               
                 notifyIcon.BalloonTipIcon = ToolTipIcon.Info;
                 notifyIcon.BalloonTipTitle = balloonTitle;
                 notifyIcon.BalloonTipText = balloonText;
