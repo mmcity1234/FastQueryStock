@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastQueryStock", "FastQueryStock\FastQueryStock.csproj", "{5E2F31FF-8D03-43E4-A860-4DCB9B8C184C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F7FD4CFB-D0E0-4324-BD79-193CDEEC3E0F} = {F7FD4CFB-D0E0-4324-BD79-193CDEEC3E0F}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastQueryStock.Test", "FastQueryStock.Test\FastQueryStock.Test.csproj", "{5CC0C426-1DD3-4231-BE4A-C6CC44D4879F}"
 EndProject

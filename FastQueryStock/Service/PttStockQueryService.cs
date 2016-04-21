@@ -15,19 +15,22 @@ namespace FastQueryStock.Service
             PttClient client = new PttClient();
             List<PttArticleData> articleList = await client.GetPageArticles(PttClient.PTT_STOCK_LAST_PAGE_URL);
 
-            while (true)
+            resultArticles.AddRange(articleList);
+            string currentPageUrl = PttClient.PTT_STOCK_LAST_PAGE_URL;
+            while (resultArticles.Count < count)
             {
-                if (articleList.Count < count)
+                string prePageUrl = await client.GetPreviousPageUrl(currentPageUrl);
+                articleList = await client.GetPageArticles(prePageUrl);
+                // Check if add all article to list in this page or add the partial articles
+                if (count - resultArticles.Count > articleList.Count)
                 {
-                    resultArticles.AddRange(articleList);
-
-                    string prePageUrl = await client.GetPreviousPageUrl();
-                    articleList = await client.GetPageArticles(prePageUrl);
+                    resultArticles.InsertRange(0, articleList);
+                    currentPageUrl = prePageUrl;
                 }
                 else
                 {
-                    int skipCount = articleList.Count - count;
-                    resultArticles.AddRange(articleList.Skip(skipCount));
+                    int skipCount = articleList.Count - (count - resultArticles.Count);
+                    resultArticles.InsertRange(0, articleList.Skip(skipCount));
                     break;
                 }
             }

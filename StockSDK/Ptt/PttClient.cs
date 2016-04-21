@@ -13,6 +13,8 @@ namespace StockSDK.Ptt
         public const string PTT_URL = "https://www.ptt.cc";
         public const string PTT_STOCK_LAST_PAGE_URL = "https://www.ptt.cc/bbs/Stock/index.html";
 
+        private const string SPLIT_TEXT = "[公告] 精華區導覽";
+
         public async Task<List<PttArticleData>> GetPageArticles(string pageUrl)
         {
             if (string.IsNullOrEmpty(pageUrl))
@@ -23,18 +25,13 @@ namespace StockSDK.Ptt
             return articles;
         }
 
-        public async Task<string> GetPreviousPageUrl()
-        {
-            return await GetPreviousPageUrl(PTT_STOCK_LAST_PAGE_URL);
-        }
-
         /// <summary>
         /// Get previous page url by current page's url
         /// </summary>
         /// <returns></returns>
         public async Task<string> GetPreviousPageUrl(string currentPageUrl)
         {
-            string html = await Http.GetAsync(PTT_STOCK_LAST_PAGE_URL);
+            string html = await Http.GetAsync(currentPageUrl);
             return RetirvePreviousPageUrl(html);
 
         }
@@ -44,13 +41,13 @@ namespace StockSDK.Ptt
             HtmlDocument doc = new HtmlDocument();
             doc.LoadHtml(html);
             var node = doc.DocumentNode.Descendants("a").
-                Where(x => x.Attributes["class"].Value == "btn wide" && x.InnerText.Contains("上頁")).
+                Where(x => x.GetAttributeValue("class", string.Empty) == "btn wide" && x.InnerText.Contains("上頁")).
                 FirstOrDefault();
 
             if (node == null)
                 throw new Exception("無法取得上一頁的網址，目前可能已經回到第一頁");
 
-            return node.Attributes["href"].Value;
+            return PTT_URL + node.Attributes["href"].Value;
         }
 
         private List<PttArticleData> ParsePttPage(string html)
@@ -59,31 +56,41 @@ namespace StockSDK.Ptt
 
             HtmlDocument doc = new HtmlDocument();
             doc.LoadHtml(html);
-            var htmlNodes = doc.DocumentNode.Descendants("div").Where(x =>
-            {
-                if (!x.Attributes.Contains("class"))
-                    return false;
+            var htmlNodes = doc.DocumentNode.Descendants("div").Where(x => x.GetAttributeValue("class", string.Empty) == "r-ent");
 
-                string classValue = x.Attributes["class"].Value;
-                return classValue == "r-ent";
-
-
-            });
             foreach (var node in htmlNodes)
             {
-                PttArticleData data = new PttArticleData();
-                if (node.Descendants("a").FirstOrDefault() != null)
+                try
                 {
-                    data.Title = node.Descendants("a").Where(x => x.Attributes["class"].Value == "title").First().InnerText;
-                    data.Url = PTT_URL + node.Descendants("a").First().Attributes["href"].Value;
+                    PttArticleData data = new PttArticleData();
+                    // find the title and url
+                    if (node.Descendants("a") != null && node.Descendants("a").FirstOrDefault() != null)
+                    {
+                        HtmlNode titleNode = node.Descendants("a").FirstOrDefault();
+                        data.Title = titleNode.InnerText;
+                        data.Url = PTT_URL + titleNode.GetAttributeValue("href", string.Empty);
+                    }
+                    else
+                    {
+                        data.IsDeleted = true;
+                        data.Title = string.Empty;
+                        var titleNodes = node.Descendants("div").Where(x => x.GetAttributeValue("class", string.Empty) == "title");
+                        if (titleNodes != null)
+                            data.Title = titleNodes.First().InnerHtml.Trim();
+                    }
+
+                    if (data.Title.StartsWith(SPLIT_TEXT))
+                        break;
+
+                    data.Date = node.Descendants("div").Where(x => x.Attributes["class"].Value == "date").First().InnerText;
+                    data.Author = node.Descendants("div").Where(x => x.Attributes["class"].Value == "author").First().InnerText;
+
+                    articles.Add(data);
                 }
-                else
-                    data.IsDeleted = true;
-
-                data.Date = node.Descendants("div").Where(x => x.Attributes["class"].Value == "date").First().InnerText;
-                data.Author = node.Descendants("div").Where(x => x.Attributes["class"].Value == "author").First().InnerText;
-
-                articles.Add(data);
+                catch (Exception e)
+                {
+                    //
+                }
             }
 
             return articles;

@@ -1,4 +1,5 @@
 ﻿using FastQueryStock.Common;
+using FastQueryStock.Controls;
 using FastQueryStock.Service;
 using FastQueryStock.ViewModels.Controls;
 using MaterialMenu;
@@ -16,6 +17,11 @@ namespace FastQueryStock.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
+        // PTT fields
+        private const string CHENGWAYE_AUTOR = "chengwaye";
+        private CancellationTokenSource _chengWayePollingCancelToken;
+        private Dictionary<string, PttArticleData> _pttRecordMap = new Dictionary<string, PttArticleData>();
+
         private IStockQueryService _queryService;
         private string _stockNumber;
         private int _timeInterval;
@@ -30,6 +36,8 @@ namespace FastQueryStock.ViewModels
         private bool _isUpdateDbLoading;
         private bool _enableUpdateDbButton = true;
         private bool _isChengWayeEnable;
+
+        
 
         #region UI Property
 
@@ -168,7 +176,7 @@ namespace FastQueryStock.ViewModels
             _localStockService = localStockService;
             _favoriteStockService = favoriteService;
             _pttService = pttService;
-            StockListViewModel = new StockListControlViewModel(queryService, favoriteService);            
+            StockListViewModel = new StockListControlViewModel(queryService, favoriteService);
             AddStockCommand = new DelegateCommand(AddStock_Click);
             DeleteStockCommand = new DelegateCommand(DeleteStock_Click);
             AutoRefreshCheckedCommand = new DelegateCommand(AutoRefresh_Checked);
@@ -180,22 +188,43 @@ namespace FastQueryStock.ViewModels
             IsAutoRefresh = true;
 #if DEBUG
             IsSafeMode = true;
+            IsChengWayeEnable = true;
 #endif
             _localStockService.InitializeData();
         }
 
-        private async void ChengWayeMode_Checked()
+        private void ChengWayeMode_Checked()
         {
             if (IsChengWayeEnable)
             {
-                List<PttArticleData> articles = await _pttService.GetLastArticle(3);
+                _chengWayePollingCancelToken = TaskExtension.Polling(TimeInterval, async () =>
+                {
+                    try
+                    {
+                        List<PttArticleData> articles = await _pttService.GetLastArticle(3);
+                        //PttArticleData chengArticle = articles.Last(x => x.Author == CHENGWAYE_AUTOR);
+
+                        PttArticleData chengArticle = articles.Last();
+
+                        if (chengArticle != null)
+                        {
+                            if (_pttRecordMap.ContainsKey(chengArticle.Url))
+                                return;
+                            _pttRecordMap.Add(chengArticle.Url, chengArticle);
+                            NotificationTip.Show("PTT", string.Format("PTT股板 [{0}] 發文通知!", articles.Last().Author), articles.Last().Title);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Dialog.ShowError("PTT發文通知監控錯誤，詳細原因 :" + e.Message);
+                    }
+                });
             }
-
-
-
+            else
+            {
+                _chengWayePollingCancelToken.Cancel();
+            }
         }
-
-
 
         /// <summary>
         /// if comfirm to the safe mode, stock panel would change the background to Transparency
@@ -213,16 +242,16 @@ namespace FastQueryStock.ViewModels
         /// Start to load data
         /// </summary>
         public async Task LoadData()
-        {           
+        {
             StringBuilder str = new StringBuilder();
             try
             {
                 var allFavorite = _favoriteStockService.GetAll();
-              
+
                 if (allFavorite.Count > 0)
                 {
                     allFavorite = allFavorite.OrderBy(x => x.Order).ToList();
-                    
+
                     List<RealTimeStockItem> realTimeStockList = await _queryService.GetMultipleRealTimeStockAsync(allFavorite);
                     StockListViewModel.AddStock(realTimeStockList);
                 }
@@ -232,16 +261,16 @@ namespace FastQueryStock.ViewModels
                 str.AppendLine(e.Message);
             }
 
-            if (str.Length != 0) 
+            if (str.Length != 0)
                 Dialog.ShowError(str.ToString());
 
         }
-      
 
-#region Event Handler
+
+        #region Event Handler
         private async void AddStock_Click()
         {
-            
+
             StockInfoItem stockItem = null;
             try
             {
@@ -256,14 +285,14 @@ namespace FastQueryStock.ViewModels
                 stockItem.Order = _favoriteStockService.GetLastOrder(0);
                 _favoriteStockService.Add(stockItem);
             }
-            catch(FavoriteStockExistException e)
+            catch (FavoriteStockExistException e)
             {
                 Dialog.ShowError(string.Format("目前 {0}({1}) 已經存在於清單內!", stockItem.Name, stockItem.Id));
             }
             catch (Exception e)
             {
-                Dialog.ShowError(e.Message + 
-                    (e.InnerException == null ? string.Empty :  " (detail : " +  e.InnerException + ")"));
+                Dialog.ShowError(e.Message +
+                    (e.InnerException == null ? string.Empty : " (detail : " + e.InnerException + ")"));
             }
             StockNumber = string.Empty;
         }
@@ -331,14 +360,7 @@ namespace FastQueryStock.ViewModels
         }
 
         private void StockItem_DoubleClick(RealTimeStockItem realTimeStock)
-        {
-            //StockInfoItem stockItemInfo = new StockInfoItem
-            //{
-            //    Id = realTimeStock.Id,
-            //    MarketType = realTimeStock.ExchangeTypeKey,
-            //    Name = realTimeStock.Name                
-            //};
-
+        {  
             Dialog.ShowStockChartDialog(_queryService, realTimeStock);
         }
         #endregion

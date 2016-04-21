@@ -70,6 +70,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -99,7 +101,9 @@
     <Compile Include="Common\AsyncLock.cs" />
     <Compile Include="Common\DateTimeUtils.cs" />
     <Compile Include="Common\DelegateCommand.cs" />
+    <Compile Include="Common\TaskExtension.cs" />
     <Compile Include="Controls\DropListBox.cs" />
+    <Compile Include="Controls\NotificationTip.cs" />
     <Compile Include="Controls\StockDropListBox.cs" />
     <Compile Include="Model\Charts\ExtraLine.cs" />
     <Compile Include="Model\FavoriteStockModel.cs" />
@@ -195,16 +199,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FastQueryStock.Entity\FastQueryStock.Entity.csproj">
-      <Project>{d147d3ec-ea3a-4f5e-80eb-1439332e68b6}</Project>
-      <Name>FastQueryStock.Entity</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\StockSDK\StockSDK.csproj">
-      <Project>{f7fd4cfb-d0e0-4324-bd79-193cdeec3e0f}</Project>
-      <Name>StockSDK</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\read_more-128.png" />
   </ItemGroup>
   <ItemGroup>
@@ -212,6 +206,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\delete-128.png" />
+    <Content Include="Images\stockicon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="sqlite3.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -228,7 +225,16 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\FastQueryStock.Entity\FastQueryStock.Entity.csproj">
+      <Project>{d147d3ec-ea3a-4f5e-80eb-1439332e68b6}</Project>
+      <Name>FastQueryStock.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StockSDK\StockSDK.csproj">
+      <Project>{f7fd4cfb-d0e0-4324-bd79-193cdeec3e0f}</Project>
+      <Name>StockSDK</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
