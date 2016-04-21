@@ -143,6 +143,8 @@
                                 </MahControls:ProgressRing>
                             </StackPanel>
 
+                            <TextBlock Text="操底王通知" Style="{DynamicResource SettingTitleTextStyle}"/>
+                            <MahControls:ToggleSwitch CheckChangedCommand="{Binding ChengWayeModelCommand}" IsChecked="{Binding IsChengWayeEnable, Mode=TwoWay}" Style="{DynamicResource ToggleSwitchSettingStyle}" HorizontalAlignment="Left"/>
                             <!--<materialMenu:MenuButton Text="關於" ></materialMenu:MenuButton>-->
                         </StackPanel>
                     </StackPanel>

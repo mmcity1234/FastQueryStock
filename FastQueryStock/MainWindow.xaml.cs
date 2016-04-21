@@ -32,7 +32,7 @@ namespace FastQueryStock
             this.AllowsTransparency = true;
             
             //viewModel = new MainViewModel(new GoogleStockQueryService(), new LocalStockService());
-            viewModel = new MainViewModel(new TwseStockQueryService(), new LocalStockService(), new FavoriteStockService());
+            viewModel = new MainViewModel(new TwseStockQueryService(), new LocalStockService(), new FavoriteStockService(), new PttStockQueryService());
             
             DataContext = viewModel;
             viewModel.LoadData();

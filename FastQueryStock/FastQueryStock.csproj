@@ -109,10 +109,13 @@
     <Compile Include="Service\FavoriteStockService.cs" />
     <Compile Include="Service\IFavoriteStockService.cs" />
     <Compile Include="Service\ILocalStockService.cs" />
+    <Compile Include="Service\IPttStockQueryService.cs" />
     <Compile Include="Service\IStockQueryService.cs" />
     <Compile Include="Service\GoogleStockQueryService.cs" />
     <Compile Include="Service\LocalStockService.cs" />
+    <Compile Include="Service\PttStockQueryService.cs" />
     <Compile Include="Service\TwseStockQueryService.cs" />
+    <Compile Include="ViewModels\PttContentViewModel.cs" />
     <Compile Include="ViewModels\StockMainChartViewModel.cs" />
     <Compile Include="ViewModels\Controls\StockValueChartViewModel.cs" />
     <Compile Include="Views\Chart\StockValueChartControl.xaml.cs">

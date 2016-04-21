@@ -2,6 +2,7 @@
 using FastQueryStock.Service;
 using FastQueryStock.ViewModels.Controls;
 using MaterialMenu;
+using StockSDK.Ptt;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,11 +23,13 @@ namespace FastQueryStock.ViewModels
         private string _backgroundColor = "#FFFFFFFF";
         private IFavoriteStockService _favoriteStockService;
         private ILocalStockService _localStockService;
+        private IPttStockQueryService _pttService;
         private RealTimeStockItem _selectedStockItem;
         private bool _enableDeleteButton;
         private bool _isSafeMode;
         private bool _isUpdateDbLoading;
         private bool _enableUpdateDbButton = true;
+        private bool _isChengWayeEnable;
 
         #region UI Property
 
@@ -130,6 +133,16 @@ namespace FastQueryStock.ViewModels
             }
         }
 
+        public bool IsChengWayeEnable
+        {
+            get { return _isChengWayeEnable; }
+            set
+            {
+                _isChengWayeEnable = value;
+                NotifyPropertyChanged("IsChengWayeEnable");
+            }
+        }
+
 
         #endregion
 
@@ -142,13 +155,19 @@ namespace FastQueryStock.ViewModels
         public ICommand UpdateAllStockCommand { get; set; }
 
         public ICommand StockItemDoubleClickCommand { get; set; }
+
+        /// <summary>
+        /// 抄底王監控模式
+        /// </summary>
+        public ICommand ChengWayeModelCommand { get; set; }
         #endregion
 
-        public MainViewModel(IStockQueryService queryService, ILocalStockService localStockService, IFavoriteStockService favoriteService)
+        public MainViewModel(IStockQueryService queryService, ILocalStockService localStockService, IFavoriteStockService favoriteService, IPttStockQueryService pttService)
         {
             _queryService = queryService;
             _localStockService = localStockService;
             _favoriteStockService = favoriteService;
+            _pttService = pttService;
             StockListViewModel = new StockListControlViewModel(queryService, favoriteService);            
             AddStockCommand = new DelegateCommand(AddStock_Click);
             DeleteStockCommand = new DelegateCommand(DeleteStock_Click);
@@ -156,7 +175,7 @@ namespace FastQueryStock.ViewModels
             SafeModeCheckedCommand = new DelegateCommand(SafeMode_Checked);
             UpdateAllStockCommand = new DelegateCommand(UpdateAllStock_Click);
             StockItemDoubleClickCommand = new DelegateCommand<RealTimeStockItem>(StockItem_DoubleClick);
-
+            ChengWayeModelCommand = new DelegateCommand(ChengWayeMode_Checked);
             TimeInterval = 10;
             IsAutoRefresh = true;
 #if DEBUG
@@ -165,7 +184,18 @@ namespace FastQueryStock.ViewModels
             _localStockService.InitializeData();
         }
 
-     
+        private async void ChengWayeMode_Checked()
+        {
+            if (IsChengWayeEnable)
+            {
+                List<PttArticleData> articles = await _pttService.GetLastArticle(3);
+            }
+
+
+
+        }
+
+
 
         /// <summary>
         /// if comfirm to the safe mode, stock panel would change the background to Transparency

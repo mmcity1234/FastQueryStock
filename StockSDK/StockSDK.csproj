@@ -58,6 +58,8 @@
     <Compile Include="Network\ParseHtmlException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\RealTimeStockModel.cs" />
+    <Compile Include="Ptt\PttClient.cs" />
+    <Compile Include="Ptt\PttArticleData.cs" />
     <Compile Include="QueryDataTimeOutException.cs" />
     <Compile Include="QueryStockTypeFailedException.cs" />
     <Compile Include="Twse\ChartPointData.cs" />
