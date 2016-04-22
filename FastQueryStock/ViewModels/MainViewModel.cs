@@ -206,7 +206,7 @@ namespace FastQueryStock.ViewModels
 
                         PttArticleData chengArticle = articles.Last();
 
-                        if (chengArticle != null)
+                        if (chengArticle != null && !string.IsNullOrEmpty(chengArticle.Url))
                         {
                             if (_pttRecordMap.ContainsKey(chengArticle.Url))
                                 return;
