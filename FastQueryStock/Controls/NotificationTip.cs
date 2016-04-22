@@ -15,18 +15,15 @@ namespace FastQueryStock.Controls
         {
             notifyIcon.Visible = true;
             notifyIcon.Icon = new System.Drawing.Icon(Path.GetFullPath(@"Images\stockicon.ico"));
-            notifyIcon.Text = "FastQueryStock.Application";
+            notifyIcon.Text = "TWSE Stock";
         }
 
-        
+
         public static void Show(string balloonTitle, string balloonText)
         {
             try
-            {               
-                notifyIcon.BalloonTipIcon = ToolTipIcon.Info;
-                notifyIcon.BalloonTipTitle = balloonTitle;
-                notifyIcon.BalloonTipText = balloonText;
-                notifyIcon.ShowBalloonTip(3000);
+            {
+                notifyIcon.ShowBalloonTip(20000, balloonTitle, balloonText, ToolTipIcon.Info);
             }
             catch (Exception ex)
             {

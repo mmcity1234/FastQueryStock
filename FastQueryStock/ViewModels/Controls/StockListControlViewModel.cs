@@ -48,7 +48,7 @@ namespace FastQueryStock.ViewModels.Controls
             StockList.Remove(item);
         }
 
-        
+
         #region Polling
         private CancellationTokenSource cancelToken;
         /// <summary>
@@ -83,8 +83,8 @@ namespace FastQueryStock.ViewModels.Controls
                                 if (newStockValue != null)
                                     viewItem.Update(newStockValue);
 #if DEBUG 
-                                else //for test
-                                    Dialog.ShowWarning("找不到符合的資料進行更新，股票名稱[" + viewItem.Name + "]");
+                                //else //for test
+                                //    Dialog.ShowWarning("找不到符合的資料進行更新，股票名稱[" + viewItem.Name + "]");
 #endif
                             }
                         }
@@ -102,9 +102,9 @@ namespace FastQueryStock.ViewModels.Controls
             if (cancelToken != null)
                 cancelToken.Cancel();
         }
-#endregion
+        #endregion
 
-      
-        
+
+
     }
 }
