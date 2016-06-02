@@ -362,6 +362,7 @@ namespace FastQueryStock.ViewModels
         private void StockItem_DoubleClick(RealTimeStockItem realTimeStock)
         {  
             Dialog.ShowStockChartDialog(_queryService, realTimeStock);
+            Dialog.ShowBuySellPriceDialog(realTimeStock);
         }
         #endregion
 

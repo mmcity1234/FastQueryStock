@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hardcodet.Wpf.TaskbarNotification;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,11 +12,12 @@ namespace FastQueryStock.Controls
     public class NotificationTip
     {
         static NotifyIcon notifyIcon = new NotifyIcon();
+       // static TaskbarIcon notifyIcon = new TaskbarIcon();
         static NotificationTip()
         {
-            notifyIcon.Visible = true;
-            notifyIcon.Icon = new System.Drawing.Icon(Path.GetFullPath(@"Images\stockicon.ico"));
-            notifyIcon.Text = "TWSE Stock";
+            //notifyIcon.Visible = true;
+           notifyIcon.Icon = new System.Drawing.Icon(Path.GetFullPath(@"Images\stockicon.ico"));
+            //notifyIcon.Text = "TWSE Stock";
         }
 
 
@@ -23,7 +25,7 @@ namespace FastQueryStock.Controls
         {
             try
             {
-                notifyIcon.ShowBalloonTip(20000, balloonTitle, balloonText, ToolTipIcon.Info);
+                notifyIcon.ShowBalloonTip(15000, balloonTitle, balloonText, ToolTipIcon.Info);
             }
             catch (Exception ex)
             {
@@ -31,3 +33,4 @@ namespace FastQueryStock.Controls
         }
     }
 }
+

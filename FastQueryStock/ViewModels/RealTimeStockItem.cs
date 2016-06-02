@@ -1,4 +1,5 @@
-﻿using FastQueryStock.Service;
+﻿using FastQueryStock.Common;
+using FastQueryStock.Service;
 using StockSDK;
 using StockSDK.Google;
 using StockSDK.Model;
@@ -251,87 +252,44 @@ namespace FastQueryStock.ViewModels
 
         public Brush CurrentPriceValueColor
         {
-            get { return GetValueForegroundColor(CurrentPrice, YesterdayPrice); }
+            get { return ValueColorHelper.GetValueForegroundColor(CurrentPrice, YesterdayPrice, LimitDown, LimitUp); }
         }
 
         public Brush HighestPriceValueColor
         {
-            get { return GetValueForegroundColor(HighestPrice, YesterdayPrice); }
+            get { return ValueColorHelper.GetValueForegroundColor(HighestPrice, YesterdayPrice, LimitDown, LimitUp); }
         }
 
         public Brush LowestPriceValueColor
         {
-            get { return GetValueForegroundColor(LowestPrice, YesterdayPrice); }
+            get { return ValueColorHelper.GetValueForegroundColor(LowestPrice, YesterdayPrice, LimitDown, LimitUp); }
         }
 
         public Brush OpenPriceValueColor
         {
-            get { return GetValueForegroundColor(OpenPrice, YesterdayPrice); }
+            get { return ValueColorHelper.GetValueForegroundColor(OpenPrice, YesterdayPrice, LimitDown, LimitUp); }
         }
 
         public Brush HighestPriceValueBackgroundColor
         {
-            get { return GetValueBackgroundColor(HighestPrice); }
+            get { return ValueColorHelper.GetValueBackgroundColor(HighestPrice, LimitDown, LimitUp); }
         }
 
         public Brush LowestPriceValueBackgroundColor
         {
-            get { return GetValueBackgroundColor(LowestPrice); }
+            get { return ValueColorHelper.GetValueBackgroundColor(LowestPrice, LimitDown, LimitUp); }
         }
 
         public Brush OpenPriceValueBackgroundColor
         {
-            get { return GetValueBackgroundColor(OpenPrice); }
+            get { return ValueColorHelper.GetValueBackgroundColor(OpenPrice, LimitDown, LimitUp); }
         }
 
         public Brush CurrentPriceValueBackgroundColor
         {
-            get { return GetValueBackgroundColor(CurrentPrice); }
+            get { return ValueColorHelper.GetValueBackgroundColor(CurrentPrice, LimitDown, LimitUp); }
         }
-
-
-
-        /// <summary>
-        /// 取得是否為漲跌停板的背景色
-        /// </summary>
-        /// <param name="compareValue">compare value</param>
-        /// <returns></returns>
-        private Brush GetValueBackgroundColor(string compareValue)
-        {
-            Brush result= null;
-            if (!string.IsNullOrEmpty(compareValue) && !string.IsNullOrEmpty(LimitDown) && !string.IsNullOrEmpty(LimitUp))
-            {
-                decimal limitUp = Convert.ToDecimal(LimitUp);
-                decimal limitDown = Convert.ToDecimal(LimitDown);
-                decimal value = Convert.ToDecimal(compareValue);
-                if (value >= limitUp)
-                    result = Brushes.Red;
-                else if (value <= limitDown)
-                    result = Brushes.Green;
-            }
-            return result;
-        }
-
-        private Brush GetValueForegroundColor(string compareValue, string baseValue)
-        {
-            Brush result = Brushes.Black;
-            if (!string.IsNullOrEmpty(compareValue) && !string.IsNullOrEmpty(baseValue))
-            {
-                // if the stock value is limit up or limit down, return the wihte color
-                Brush backgroundColor = GetValueBackgroundColor(compareValue);
-                if (backgroundColor == Brushes.Red || backgroundColor == Brushes.Green)
-                    return Brushes.White;
-
-
-                decimal valueDiff = Convert.ToDecimal(compareValue) - Convert.ToDecimal(baseValue);
-
-                if (valueDiff > 0)
-                    result = Brushes.Red;
-                else if (valueDiff < 0)
-                    result = Brushes.Green;
-            }
-            return result;
-        }
+        
 
         #endregion
 
