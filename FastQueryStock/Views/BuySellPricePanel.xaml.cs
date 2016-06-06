@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.Controls;
+﻿using FastQueryStock.ViewModels;
+using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +21,19 @@ namespace FastQueryStock.Views
     /// </summary>
     public partial class BuySellPricePanel : MetroWindow
     {
+
         public BuySellPricePanel()
         {
             InitializeComponent();
+        }
+
+        private void BuySellPricePanel_Closed(object sender, EventArgs e)
+        {
+            BuySellPricePanelViewModel viewModel = DataContext as BuySellPricePanelViewModel;
+            if(viewModel != null)
+            {
+                viewModel.Close();
+            }
         }
     }
 }

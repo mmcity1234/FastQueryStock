@@ -1,4 +1,5 @@
-﻿using FastQueryStock.Service;
+﻿using FastQueryStock.Event;
+using FastQueryStock.Service;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -81,7 +82,10 @@ namespace FastQueryStock.ViewModels.Controls
                             {
                                 var newStockValue = realTimeStockList.FirstOrDefault(x => x.Id == viewItem.Id);
                                 if (newStockValue != null)
+                                {
                                     viewItem.Update(newStockValue);
+                                    NotificationCenter.Instance.NotifyEvent(EventType.RealTimeStockValue, newStockValue);
+                                }
 #if DEBUG 
                                 //else //for test
                                 //    Dialog.ShowWarning("找不到符合的資料進行更新，股票名稱[" + viewItem.Name + "]");

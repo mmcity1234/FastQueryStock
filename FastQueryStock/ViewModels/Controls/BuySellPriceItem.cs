@@ -63,22 +63,22 @@ namespace FastQueryStock.ViewModels.Controls
 
         public Brush SellPriceColor
         {
-            get { return ValueColorHelper.GetValueForegroundColor(_stockItem.OpenPrice, _stockItem.YesterdayPrice, _stockItem.LimitDown, _stockItem.LimitUp); }
+            get { return ValueColorHelper.GetValueForegroundColor(SellPrice, _stockItem.YesterdayPrice, _stockItem.LimitDown, _stockItem.LimitUp); }
         }
 
         public Brush SellPriceBackgroundColor
         {
-            get { return ValueColorHelper.GetValueBackgroundColor(_stockItem.HighestPrice, _stockItem.LimitDown, _stockItem.LimitUp); }
+            get { return ValueColorHelper.GetValueBackgroundColor(SellPrice, _stockItem.LimitDown, _stockItem.LimitUp); }
         }
 
         public Brush BuyPriceColor
         {
-            get { return ValueColorHelper.GetValueForegroundColor(_stockItem.OpenPrice, _stockItem.YesterdayPrice, _stockItem.LimitDown, _stockItem.LimitUp); }
+            get { return ValueColorHelper.GetValueForegroundColor(BuyPrice, _stockItem.YesterdayPrice, _stockItem.LimitDown, _stockItem.LimitUp); }
 }
 
         public Brush BuyPriceBackgroundColor
 {
-            get { return ValueColorHelper.GetValueBackgroundColor(_stockItem.HighestPrice, _stockItem.LimitDown, _stockItem.LimitUp); }
+            get { return ValueColorHelper.GetValueBackgroundColor(BuyPrice, _stockItem.LimitDown, _stockItem.LimitUp); }
 }
     }
 }
