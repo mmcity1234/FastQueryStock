@@ -165,6 +165,8 @@ namespace FastQueryStock.ViewModels.Controls
                 Name = StockValueContext.Name
             };
             StockChartModel chartModel = await _queryService.GetRealTimeTradeChartAsync(stockInfo);
+            if (chartModel.ChartData.Count == 0)
+                throw new Exception(string.Format("查無此 [{0}] 的即時交易資料", StockValueContext.Name));
 
             // Set the start and end value to y axis
             SetOpenCloseTimeToCharAxis(chartModel);

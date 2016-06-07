@@ -161,7 +161,7 @@ namespace FastQueryStock.ViewModels
             get { return _buyPriceList; }
             set
             {
-                _buyPriceList = value;
+                _buyPriceList = skipUnderLineWord(value);
                 NotifyPropertyChanged("BuyPriceList");
             }
         }
@@ -174,7 +174,7 @@ namespace FastQueryStock.ViewModels
             get { return _buyQuantityList; }
             set
             {
-                _buyQuantityList = value;
+                _buyQuantityList = skipUnderLineWord(value);
                 NotifyPropertyChanged("BuyQuantityList");
             }
         }
@@ -187,7 +187,7 @@ namespace FastQueryStock.ViewModels
             get { return _sellPriceList; }
             set
             {
-                _sellPriceList = value;
+                _sellPriceList = skipUnderLineWord(value);
                 NotifyPropertyChanged("SellPriceList");
             }
         }
@@ -200,7 +200,7 @@ namespace FastQueryStock.ViewModels
             get { return _sellQuantityList; }
             set
             {
-                _sellQuantityList = value;
+                _sellQuantityList = skipUnderLineWord(value);
                 NotifyPropertyChanged("SellQuantityList");
             }
         }
@@ -289,7 +289,7 @@ namespace FastQueryStock.ViewModels
         {
             get { return ValueColorHelper.GetValueBackgroundColor(CurrentPrice, LimitDown, LimitUp); }
         }
-        
+
 
         #endregion
 
@@ -355,5 +355,18 @@ namespace FastQueryStock.ViewModels
             this.SellPriceList = newData.SellPriceList;
             this.SellQuantityList = newData.SellQuantityList;
         }
+
+        private string skipUnderLineWord(string priceString)
+        {
+            if (string.IsNullOrEmpty(priceString))
+                return string.Empty;
+            else if (priceString[priceString.Length - 1] == '_')
+                return priceString.Substring(0, priceString.Length - 1);
+            else if (priceString[priceString.Length - 1] == '-')     // none of available
+                return string.Empty;
+            else
+                return priceString;
+        }
+
     }
 }

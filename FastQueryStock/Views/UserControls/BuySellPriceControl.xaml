@@ -6,11 +6,11 @@
              mc:Ignorable="d"
             >
     <UserControl.Resources>
-        <Style x:Key="LeftAlignmentStyle" TargetType="{x:Type TextBlock}">
+        <Style x:Key="LeftAlignmentStyle" TargetType="{x:Type FrameworkElement }">
             <Setter Property="Margin" Value="0,2,0,2" />
             <Setter Property="HorizontalAlignment" Value="Left" />
         </Style>
-        <Style x:Key="RightAlignmentStyle" TargetType="{x:Type TextBlock}">
+        <Style x:Key="RightAlignmentStyle" TargetType="{x:Type FrameworkElement }">
             <Setter Property="Margin" Value="0,2,0,2" />
             <Setter Property="HorizontalAlignment" Value="Right" />
         </Style>
@@ -22,16 +22,29 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="40" />
-                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="{Binding QuantityWidth}" />
                             <ColumnDefinition Width="10" />
-                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="{Binding QuantityWidth}" />
                             <ColumnDefinition Width="40" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="{Binding BuyPrice}" Foreground="{Binding BuyPriceColor}" Background="{Binding BuyPriceBackgroundColor}"  Grid.Column="0" Style="{DynamicResource LeftAlignmentStyle}"/>
-                        <TextBlock Text="{Binding BuyQuantity}"  Foreground="#FF646464"  Grid.Column="1" Style="{DynamicResource RightAlignmentStyle}"/>
+
+                        <Rectangle Width="{Binding BuyQuantityPercentage}" Grid.Column="1" Style="{DynamicResource RightAlignmentStyle}">
+                            <Rectangle.Fill>
+                                <SolidColorBrush Color="#FF86E9FF" Opacity="0.6"/>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <TextBlock Text="{Binding BuyQuantity}" Foreground="#FF646464"  Grid.Column="1" Style="{DynamicResource RightAlignmentStyle}"/>
+
+                        <Rectangle Width="{Binding SellQuantityPercentage}" Grid.Column="3" Style="{DynamicResource LeftAlignmentStyle}">
+                            <Rectangle.Fill>
+                                <SolidColorBrush Color="#FF86E9FF" Opacity="0.6"/>
+                            </Rectangle.Fill>
+                        </Rectangle>
                         <TextBlock Text="{Binding SellQuantity}" Foreground="#FF646464"  Grid.Column="3" Style="{DynamicResource LeftAlignmentStyle}"/>
+
                         <TextBlock Text="{Binding SellPrice}" Foreground="{Binding SellPriceColor}" Background="{Binding SellPriceBackgroundColor}" Grid.Column="4" Style="{DynamicResource RightAlignmentStyle}"/>
-                        
+
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>

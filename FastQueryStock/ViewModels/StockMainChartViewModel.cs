@@ -36,7 +36,7 @@ namespace FastQueryStock.ViewModel
         /// <summary>
         /// Line Chart data
         /// </summary>
-        public StockValueChartViewModel StockValueChart  { get; set; }
+        public StockValueChartViewModel StockValueChart { get; set; }
 
         public StockMainChartViewModel(IStockChartPanelView chartView, IStockQueryService queryService, RealTimeStockItem realtimeStock)
         {
@@ -47,8 +47,14 @@ namespace FastQueryStock.ViewModel
         public async void Load()
         {
             Title = _realtimeStockModel.Name + " (" + _realtimeStockModel.Id + ")";
-
-            await StockValueChart.LoadChart();
+            try
+            {
+                await StockValueChart.LoadChart();
+            }
+            catch (Exception e)
+            {
+                Dialog.ShowError("開啟即時股價圖表發生錯誤，詳細原因 : " + e.Message);
+            }
         }
     }
 }

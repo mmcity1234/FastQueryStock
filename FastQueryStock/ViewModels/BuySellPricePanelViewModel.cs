@@ -1,4 +1,5 @@
 ﻿using FastQueryStock.Common;
+using FastQueryStock.Event;
 using FastQueryStock.ViewModels.Controls;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,8 @@ namespace FastQueryStock.ViewModels
     public class BuySellPricePanelViewModel : BaseViewModel
     {
         private string _title;
-
-      
+        private string _currentVolumes;
+        private string _StockId;
 
         public string Title
         {
@@ -24,22 +25,46 @@ namespace FastQueryStock.ViewModels
                 NotifyPropertyChanged("Title");
             }
         }
+
+        /// <summary>
+        /// 目前當筆成交數
+        /// </summary>
+        public string CurrentVolumes
+        {
+            get { return _currentVolumes; }
+            set
+            {
+                _currentVolumes = value;
+                NotifyPropertyChanged("CurrentVolumes");
+            }
+        }
         public BuySellPriceViewModel PriceListViewModel { get; set; }
 
-        public BuySellPricePanelViewModel(RealTimeStockItem stockItem)
+
+        public BuySellPricePanelViewModel()
         {
-            PriceListViewModel = new BuySellPriceViewModel(stockItem);         
-            Title = string.Format("{0} ({1}) 五檔掛單",stockItem.Name, stockItem.Id);
+            PriceListViewModel = new BuySellPriceViewModel();
+            NotificationCenter.Instance.RegisterEvent<RealTimeStockItem>(EventType.RealTimeStockValue, Update_EventHandler);
         }
 
-        public void Load()
+        public void Load(RealTimeStockItem stockItem)
         {
-            PriceListViewModel.Load();
+            _StockId = stockItem.Id;
+            Title = string.Format("{0} ({1}) 五檔掛單", stockItem.Name, stockItem.Id);
+            CurrentVolumes = stockItem.CurrentTimeVolumes;
+            PriceListViewModel.Load(stockItem);
         }
 
         public void Close()
         {
-            PriceListViewModel.Release();
+            NotificationCenter.Instance.RemoveEvent<RealTimeStockItem>(EventType.RealTimeStockValue, Update_EventHandler);
+        }
+        private void Update_EventHandler(RealTimeStockItem item)
+        {
+            if (item.Id == _StockId)
+            {               
+                Load(item);
+            }
         }
     }
 }

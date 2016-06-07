@@ -56,10 +56,10 @@ namespace FastQueryStock.Service
         public static void ShowBuySellPriceDialog(RealTimeStockItem stockItem)
         {
             BuySellPricePanel panel = new BuySellPricePanel();
-            BuySellPricePanelViewModel viewModel = new BuySellPricePanelViewModel(stockItem);
+            BuySellPricePanelViewModel viewModel = new BuySellPricePanelViewModel();
             panel.DataContext = viewModel;
             panel.Show();
-            viewModel.Load();
+            viewModel.Load(stockItem);
         }
 
     }

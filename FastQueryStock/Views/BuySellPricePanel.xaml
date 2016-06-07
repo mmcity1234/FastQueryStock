@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:FastQueryStock.Views"
         xmlns:userControl="clr-namespace:FastQueryStock.Views.UserControls"
         mc:Ignorable="d"
-        Title="{Binding Title}" Height="170" Width="230"
+        Title="{Binding Title}" Height="185" Width="230"
         Closed="BuySellPricePanel_Closed">
 
     <MahControls:MetroWindow.Resources>
@@ -29,6 +29,10 @@
 
 
     <Grid Margin="-2,0,2,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
         <Grid.Triggers>
             <EventTrigger RoutedEvent="Grid.Loaded">
                 <BeginStoryboard>
@@ -39,6 +43,8 @@
                 </BeginStoryboard>
             </EventTrigger>
         </Grid.Triggers>
-        <userControl:BuySellPriceControl x:Name="stockValueChart" DataContext="{Binding PriceListViewModel}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <userControl:BuySellPriceControl DataContext="{Binding PriceListViewModel}" x:Name="stockValueChart" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+        <TextBlock Grid.Row="1" Text="單量" Margin="20,5,0,5"/>
+        <TextBlock Grid.Row="1" Text="{Binding CurrentVolumes}" Margin="55,5,0,5"/>
     </Grid>
 </MahControls:MetroWindow >
