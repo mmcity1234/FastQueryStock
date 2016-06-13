@@ -5,10 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FastQueryStock.UserControls"
              xmlns:controls="clr-namespace:FastQueryStock.Controls"
+             xmlns:tools="clr-namespace:FastQueryStock.Common"
              mc:Ignorable="d" 
              x:Name="stockListControl"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300" ContextMenuOpening="ListBox_ContextMenuOpening">
+   
     <UserControl.Resources>
+        <tools:BindingProxy x:Key="Proxy" Data="{Binding ElementName=stockListControl}" />
         <Style x:Key="StockListHeaderSytle" TargetType="{x:Type TextBlock}">
             <Setter Property="Foreground" Value="#FF646464" />
             <Setter Property="HorizontalAlignment" Value="Right" />
@@ -47,19 +50,33 @@
         </Grid>
         <ListBox ItemsSource="{Binding ElementName=stockListControl, Path=ItemSources}" Background="#01000000" Grid.Row="1"
                  SelectedItem="{Binding ElementName=stockListControl, Path=SelectedItem}" SelectionMode="Single" Grid.ColumnSpan="2"
-                 MouseDoubleClick="StockListBox_MouseDoubleClick">
-            <!--<controls:StockDropListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="ToolTip" Value="{Binding Name}"/>
-                </Style>
-            </controls:StockDropListBox.ItemContainerStyle>-->
+                 MouseDoubleClick="StockListBox_MouseDoubleClick" ContextMenuOpening="ListBox_ContextMenuOpening" x:Name="listBox">
+
+            <!--BUG -->
+            <ListBox.ContextMenu>
+                <ContextMenu ItemsSource="{Binding Source={StaticResource Proxy}, Path=Data.MenuItems}" >
+                    <!--<ContextMenu ItemsSource="{Binding ElementName=stockListControl, Path=MenuItems}" >-->
+                    <ContextMenu.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Content}"></TextBlock>
+                        </DataTemplate>
+                    </ContextMenu.ItemTemplate>
+                    <ContextMenu.ItemContainerStyle>
+                        <Style TargetType="MenuItem">
+                            <!--<Setter Property="Header" Value="{Binding Content}" />-->
+                            <Setter Property="Command" Value="{Binding Command }" />
+                            <Setter Property="CommandParameter" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, Path=SelectedItem}"/>
+                        </Style>
+                    </ContextMenu.ItemContainerStyle>
+                </ContextMenu>
+            </ListBox.ContextMenu>
 
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>
                         <!-- Tool tip-->
                         <ToolTipService.ToolTip >
-                            <Grid Background="#01FFFFFF">                               
+                            <Grid Background="#01FFFFFF">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="25" />
                                     <ColumnDefinition Width="50" />

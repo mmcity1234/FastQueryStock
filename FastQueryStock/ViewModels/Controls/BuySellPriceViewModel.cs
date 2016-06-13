@@ -48,8 +48,7 @@ namespace FastQueryStock.ViewModels.Controls
             double maxQuantity = maxBuyQuantity > maxSellQuantity ? maxBuyQuantity : maxSellQuantity;
             FillValue(stockItem.SellQuantityList, priceItemList, (value, model) => model.SellQuantityPercentage = Convert.ToDouble(model.SellQuantity) / maxQuantity * model.QuantityWidth);
             FillValue(stockItem.BuyQuantityList, priceItemList, (value, model) => model.BuyQuantityPercentage = Convert.ToDouble(model.BuyQuantity) / maxQuantity * model.QuantityWidth);
-
-
+                
             BuySellList = priceItemList;
         } 
 

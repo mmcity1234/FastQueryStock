@@ -37,6 +37,11 @@ namespace FastQueryStock.UserControls
             DependencyProperty.Register("ItemDoubleClickCommand", typeof(ICommand),
                 typeof(StockListUserControl));
 
+        public static readonly DependencyProperty MenuItemsProperty =
+         DependencyProperty.Register("MenuItems", typeof(IEnumerable),
+             typeof(StockListUserControl),
+             new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
 
         public object SelectedItem
         {
@@ -52,6 +57,12 @@ namespace FastQueryStock.UserControls
         {
             get { return (ICommand)GetValue(ItemDoubleClickCommandProperty); }
             set { SetValue(ItemDoubleClickCommandProperty, value); }
+        }
+
+        public IEnumerable MenuItems
+        {
+            get { return (IEnumerable)GetValue(MenuItemsProperty); }
+            set { SetValue(MenuItemsProperty, value); }
         }
 
 
@@ -71,7 +82,13 @@ namespace FastQueryStock.UserControls
             {
                 ItemDoubleClickCommand.Execute(listBox.SelectedItem);
             }
-        }       
+        }
         #endregion
+
+        private void ListBox_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            var s = listBox;
+            var sss = stockListControl.Resources;
+        }
     }
 }

@@ -37,12 +37,14 @@ namespace FastQueryStock.ViewModels
         private bool _enableUpdateDbButton = true;
         private bool _isChengWayeEnable;
 
-        
+
 
         #region UI Property
 
 
         public StockListControlViewModel StockListViewModel { get; set; }
+
+        public ObservableCollection<StockMenuItem> MenuList { get; set; }
 
         /// <summary>
         /// The main windows background color
@@ -186,11 +188,18 @@ namespace FastQueryStock.ViewModels
             ChengWayeModelCommand = new DelegateCommand(ChengWayeMode_Checked);
             TimeInterval = 10;
             IsAutoRefresh = true;
+
+            MenuList = new ObservableCollection<StockMenuItem>();
+            MenuList.Add(new StockMenuItem { Content = "股價走勢", Command = new DelegateCommand<RealTimeStockItem>(StockItem_ShowChartDialog) });
+            MenuList.Add(new StockMenuItem { Content = "五檔明細", Command = new DelegateCommand<RealTimeStockItem>(StockItem_ShowSellPriceDialog) });
+
+
 #if DEBUG
             IsSafeMode = true;
             IsChengWayeEnable = true;
 #endif
             _localStockService.InitializeData();
+
         }
 
         private void ChengWayeMode_Checked()
@@ -360,8 +369,24 @@ namespace FastQueryStock.ViewModels
         }
 
         private void StockItem_DoubleClick(RealTimeStockItem realTimeStock)
-        {  
+        {
+            // do not thing         
+        }
+
+        /// <summary>
+        /// 顯示股價走勢圖表
+        /// </summary>
+        /// <param name="realTimeStock"></param>
+        private void StockItem_ShowChartDialog(RealTimeStockItem realTimeStock)
+        {
             Dialog.ShowStockChartDialog(_queryService, realTimeStock);
+        }
+        /// <summary>
+        /// 顯示股票五檔掛價
+        /// </summary>
+        /// <param name="realTimeStock"></param>
+        private void StockItem_ShowSellPriceDialog(RealTimeStockItem realTimeStock)
+        {
             Dialog.ShowBuySellPriceDialog(realTimeStock);
         }
         #endregion

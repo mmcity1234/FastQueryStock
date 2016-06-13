@@ -96,7 +96,8 @@
         <!--Stock List-->
         <userControls:StockListUserControl ItemSources="{Binding StockListViewModel.StockList}" Grid.Row="1"
                                            SelectedItem="{Binding SelectedStockItem, Mode=TwoWay}" 
-                                           ItemDoubleClickCommand="{Binding StockItemDoubleClickCommand}"/>
+                                           ItemDoubleClickCommand="{Binding StockItemDoubleClickCommand}"
+                                           MenuItems="{Binding MenuList}"/>
 
         <!--Setting panel-->
         <materialMenu:SideMenu x:Name="SettingMenu" HorizontalAlignment="Left"  Grid.RowSpan="10"

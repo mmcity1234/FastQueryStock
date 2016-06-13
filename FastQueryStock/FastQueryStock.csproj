@@ -103,6 +103,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Common\AsyncLock.cs" />
+    <Compile Include="Common\BindingProxy.cs" />
     <Compile Include="Common\DateTimeUtils.cs" />
     <Compile Include="Common\DelegateCommand.cs" />
     <Compile Include="Common\TaskExtension.cs" />
@@ -129,6 +130,7 @@
     <Compile Include="ViewModels\BuySellPricePanelViewModel.cs" />
     <Compile Include="ViewModels\Controls\BuySellPriceItem.cs" />
     <Compile Include="ViewModels\Controls\BuySellPriceViewModel.cs" />
+    <Compile Include="ViewModels\Controls\StockMenuItem.cs" />
     <Compile Include="ViewModels\PttContentViewModel.cs" />
     <Compile Include="ViewModels\StockMainChartViewModel.cs" />
     <Compile Include="ViewModels\Controls\StockValueChartViewModel.cs" />

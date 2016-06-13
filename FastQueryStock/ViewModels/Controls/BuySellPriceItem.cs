@@ -17,6 +17,9 @@ namespace FastQueryStock.ViewModels.Controls
         private RealTimeStockItem _stockItem;
         private double _buyQuantityPercentage;
         private double _sellQuantityPercentage;
+        private bool isLowestPrice;
+        private bool isHighestPrice;
+
 
         private const double QUANTITY_WIDTH = 50;
 
@@ -40,6 +43,7 @@ namespace FastQueryStock.ViewModels.Controls
             {
                 _buyPrice = value;
                 NotifyPropertyChanged("BuyPrice");
+                NotifyPropertyChanged("IsLowestPrice");
             }
 
         }
@@ -60,6 +64,7 @@ namespace FastQueryStock.ViewModels.Controls
             {
                 _sellPrice = value;
                 NotifyPropertyChanged("SellPrice");
+                NotifyPropertyChanged("IsHighestPrice");
             }
         }
 
@@ -91,6 +96,17 @@ namespace FastQueryStock.ViewModels.Controls
                 NotifyPropertyChanged("SellQuantityPercentage");
             }
         }
+
+        public bool IsLowestPrice
+        {
+            get { return _stockItem.LowestPrice == BuyPrice; }
+        }
+
+        public bool IsHighestPrice
+        {
+            get { return _stockItem.HighestPrice == SellPrice; }
+        }
+
 
         public Brush SellPriceColor
         {
