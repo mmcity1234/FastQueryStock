@@ -17,11 +17,9 @@ namespace FastQueryStock.ViewModels.Controls
         private RealTimeStockItem _stockItem;
         private double _buyQuantityPercentage;
         private double _sellQuantityPercentage;
-        private bool isLowestPrice;
-        private bool isHighestPrice;
-
 
         private const double QUANTITY_WIDTH = 50;
+
 
         public BuySellPriceItem(RealTimeStockItem stockItem)
         {
@@ -97,14 +95,14 @@ namespace FastQueryStock.ViewModels.Controls
             }
         }
 
-        public bool IsLowestPrice
+        public string BuyPriceLowestString
         {
-            get { return _stockItem.LowestPrice == BuyPrice; }
-        }
+            get { return GetThePriceMarked(BuyPrice); }
 
-        public bool IsHighestPrice
+        }
+        public string SellPriceHighestString
         {
-            get { return _stockItem.HighestPrice == SellPrice; }
+            get { return GetThePriceMarked(SellPrice); }
         }
 
 
@@ -126,6 +124,18 @@ namespace FastQueryStock.ViewModels.Controls
         public Brush BuyPriceBackgroundColor
         {
             get { return ValueColorHelper.GetValueBackgroundColor(BuyPrice, _stockItem.LimitDown, _stockItem.LimitUp); }
+        }
+
+        private string GetThePriceMarked(string price)
+        {
+            if (_stockItem.LowestPrice == price && _stockItem.HighestPrice == price)
+                return "LH";
+            else if (_stockItem.LowestPrice == price)
+                return "L";
+            else if (_stockItem.HighestPrice == price)
+                return "H";
+            else
+                return string.Empty;
         }
     }
 }

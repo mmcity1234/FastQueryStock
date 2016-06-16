@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:FastQueryStock.Views"
         xmlns:userControl="clr-namespace:FastQueryStock.Views.UserControls"
         mc:Ignorable="d"
-        Title="{Binding Title}" Height="185" Width="230"
+        Title="{Binding Title}" Height="185" Width="240"
         Closed="BuySellPricePanel_Closed">
 
     <MahControls:MetroWindow.Resources>

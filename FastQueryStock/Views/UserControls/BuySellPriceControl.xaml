@@ -22,16 +22,16 @@
                 <DataTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="15" />
+                            <ColumnDefinition Width="20" />
                             <ColumnDefinition Width="40" />
                             <ColumnDefinition Width="{Binding QuantityWidth}" />
                             <ColumnDefinition Width="10" />
                             <ColumnDefinition Width="{Binding QuantityWidth}" />
                             <ColumnDefinition Width="40" />
-                            <ColumnDefinition Width="15" />
+                            <ColumnDefinition Width="20" />
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="L" Foreground="{Binding BuyPriceColor}" Visibility="{Binding IsLowestPrice, Converter={StaticResource booleanToVisibilityConverter}}" TextAlignment="Left" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding BuyPriceLowestString}" Foreground="{Binding BuyPriceColor}" TextAlignment="Left" VerticalAlignment="Center"/>
 
                         <TextBlock Text="{Binding BuyPrice}" Grid.Column="1" Foreground="{Binding BuyPriceColor}" Background="{Binding BuyPriceBackgroundColor}" Style="{DynamicResource LeftAlignmentStyle}"/>
 
@@ -51,7 +51,7 @@
 
                         <TextBlock Text="{Binding SellPrice}" Foreground="{Binding SellPriceColor}" Background="{Binding SellPriceBackgroundColor}" Grid.Column="5" Style="{DynamicResource RightAlignmentStyle}"/>
 
-                        <TextBlock Text="H" Foreground="{Binding SellPriceColor}" Grid.Column="6" Visibility="{Binding IsHighestPrice, Converter={StaticResource booleanToVisibilityConverter}}" TextAlignment="Right" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding SellPriceHighestString}" Foreground="{Binding SellPriceColor}" Grid.Column="6" TextAlignment="Right" VerticalAlignment="Center"/>
 
                     </Grid>
                 </DataTemplate>
