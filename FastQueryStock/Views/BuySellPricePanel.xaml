@@ -44,7 +44,18 @@
             </EventTrigger>
         </Grid.Triggers>
         <userControl:BuySellPriceControl DataContext="{Binding PriceListViewModel}" x:Name="stockValueChart" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,5,0,0"/>
-        <TextBlock Grid.Row="1" Text="單量" Margin="20,5,0,5"/>
-        <TextBlock Grid.Row="1" Text="{Binding CurrentVolumes}" Margin="55,5,0,5"/>
+        <Grid Grid.Row="1" HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="70"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="成交價" Margin="20,5,0,5"/>
+            <TextBlock  Grid.Column="1" Text="{Binding CurrentPrice}" Margin="10,5,0,5"/>
+
+            <TextBlock Grid.Column="2" Text="單量" Margin="10,5,0,5"/>
+            <TextBlock Grid.Column="3" Text="{Binding CurrentVolumes}" Foreground="{Binding VoluemsColor}" Margin="10,5,0,5"/>
+        </Grid>
     </Grid>
 </MahControls:MetroWindow >

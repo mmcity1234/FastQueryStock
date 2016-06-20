@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace FastQueryStock.ViewModels
 {
@@ -15,6 +16,9 @@ namespace FastQueryStock.ViewModels
         private string _title;
         private string _currentVolumes;
         private string _StockId;
+        private Brush _voluemsColor;
+        private RealTimeStockItem _currentStockItem;
+        private string _currentPrice;
 
         public string Title
         {
@@ -25,7 +29,15 @@ namespace FastQueryStock.ViewModels
                 NotifyPropertyChanged("Title");
             }
         }
-
+        public string CurrentPrice
+        {
+            get { return _currentPrice; }
+            set
+            {
+                _currentPrice = value;
+                NotifyPropertyChanged("CurrentPrice");
+            }
+        }
         /// <summary>
         /// 目前當筆成交數
         /// </summary>
@@ -38,6 +50,17 @@ namespace FastQueryStock.ViewModels
                 NotifyPropertyChanged("CurrentVolumes");
             }
         }
+
+        public Brush VoluemsColor
+        {
+            get { return _voluemsColor; }
+            set
+            {
+                _voluemsColor = value;
+                NotifyPropertyChanged("VoluemsColor");
+            }
+        }
+
         public BuySellPriceViewModel PriceListViewModel { get; set; }
 
 
@@ -52,7 +75,44 @@ namespace FastQueryStock.ViewModels
             _StockId = stockItem.Id;
             Title = string.Format("{0} ({1}) 五檔掛單", stockItem.Name, stockItem.Id);
             CurrentVolumes = stockItem.CurrentTimeVolumes;
+            CurrentPrice = stockItem.CurrentPrice;
+
+            // set the color of current stock volumes
+            if (_currentStockItem == null)
+                VoluemsColor = GetVolumeColor(string.Empty, string.Empty, stockItem.BuyPriceList, stockItem.SellPriceList, stockItem.CurrentPrice);
+            else
+                VoluemsColor = GetVolumeColor(_currentStockItem.BuyPriceList, _currentStockItem.SellPriceList, stockItem.BuyPriceList, stockItem.SellPriceList, stockItem.CurrentPrice);
+
             PriceListViewModel.Load(stockItem);
+            _currentStockItem = stockItem;
+        }
+
+        private SolidColorBrush GetVolumeColor(string currentBuyPriceStr, string currentSellPriceStr, string newBuyPriceStr, string newSellPriceStr, string currentPrice)
+        {
+            var currentBuyPriceList = currentBuyPriceStr.Split('_');
+            var currentSellPriceList = currentSellPriceStr.Split('_');
+            var newBuyPriceList = newBuyPriceStr.Split('_');
+            var newSellPriceList = newSellPriceStr.Split('_');
+            if (string.IsNullOrEmpty(currentBuyPriceStr) || string.IsNullOrEmpty(currentSellPriceStr))
+            {
+                if (newBuyPriceList.Contains(currentPrice))
+                    return Brushes.Green;
+                else if (newSellPriceList.Contains(currentPrice))
+                    return Brushes.Red;
+            }
+            // 持續賣
+            else if (currentBuyPriceList.Contains(currentPrice) && newBuyPriceList.Contains(currentPrice))
+                return Brushes.Green;
+            // 持續買
+            else if (currentSellPriceList.Contains(currentPrice) && newSellPriceList.Contains(currentPrice))
+                return Brushes.Red;
+            // 單檔掛價買完
+            else if (currentSellPriceList.Contains(currentPrice) && newBuyPriceList.Contains(currentPrice))
+                return Brushes.Red;
+            // 單檔掛價賣完
+            else if (currentBuyPriceList.Contains(currentPrice) && newSellPriceList.Contains(currentPrice))
+                return Brushes.Green;
+            return Brushes.Black;
         }
 
         public void Close()
@@ -62,7 +122,7 @@ namespace FastQueryStock.ViewModels
         private void Update_EventHandler(RealTimeStockItem item)
         {
             if (item.Id == _StockId)
-            {               
+            {
                 Load(item);
             }
         }

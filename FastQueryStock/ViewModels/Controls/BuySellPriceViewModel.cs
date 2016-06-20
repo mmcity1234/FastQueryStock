@@ -10,7 +10,7 @@ namespace FastQueryStock.ViewModels.Controls
 {
     public class BuySellPriceViewModel : BaseViewModel
     {
-        private List<BuySellPriceItem> _buySellList;
+        private List<BuySellPriceItem> _buySellList;        
 
         public List<BuySellPriceItem> BuySellList
         {

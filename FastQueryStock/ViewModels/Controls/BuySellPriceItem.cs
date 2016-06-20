@@ -41,7 +41,6 @@ namespace FastQueryStock.ViewModels.Controls
             {
                 _buyPrice = value;
                 NotifyPropertyChanged("BuyPrice");
-                NotifyPropertyChanged("IsLowestPrice");
             }
 
         }
@@ -62,7 +61,6 @@ namespace FastQueryStock.ViewModels.Controls
             {
                 _sellPrice = value;
                 NotifyPropertyChanged("SellPrice");
-                NotifyPropertyChanged("IsHighestPrice");
             }
         }
 
@@ -104,7 +102,10 @@ namespace FastQueryStock.ViewModels.Controls
         {
             get { return GetThePriceMarked(SellPrice); }
         }
-
+        public Brush SellPriceMarkedColor
+        {
+            get { return ValueColorHelper.GetValueForegroundColor(SellPrice, _stockItem.YesterdayPrice); }
+        }
 
         public Brush SellPriceColor
         {
@@ -116,6 +117,10 @@ namespace FastQueryStock.ViewModels.Controls
             get { return ValueColorHelper.GetValueBackgroundColor(SellPrice, _stockItem.LimitDown, _stockItem.LimitUp); }
         }
 
+        public Brush BuyPriceMarkedColor
+        {
+            get { return ValueColorHelper.GetValueForegroundColor(SellPrice, _stockItem.YesterdayPrice); }
+        }
         public Brush BuyPriceColor
         {
             get { return ValueColorHelper.GetValueForegroundColor(BuyPrice, _stockItem.YesterdayPrice, _stockItem.LimitDown, _stockItem.LimitUp); }

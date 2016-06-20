@@ -31,7 +31,7 @@
                             <ColumnDefinition Width="20" />
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="{Binding BuyPriceLowestString}" Foreground="{Binding BuyPriceColor}" TextAlignment="Left" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding BuyPriceLowestString}" Foreground="{Binding SellPriceMarkedColor}" TextAlignment="Left" VerticalAlignment="Center"/>
 
                         <TextBlock Text="{Binding BuyPrice}" Grid.Column="1" Foreground="{Binding BuyPriceColor}" Background="{Binding BuyPriceBackgroundColor}" Style="{DynamicResource LeftAlignmentStyle}"/>
 
@@ -51,7 +51,7 @@
 
                         <TextBlock Text="{Binding SellPrice}" Foreground="{Binding SellPriceColor}" Background="{Binding SellPriceBackgroundColor}" Grid.Column="5" Style="{DynamicResource RightAlignmentStyle}"/>
 
-                        <TextBlock Text="{Binding SellPriceHighestString}" Foreground="{Binding SellPriceColor}" Grid.Column="6" TextAlignment="Right" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding SellPriceHighestString}" Foreground="{Binding SellPriceMarkedColor}" Grid.Column="6" TextAlignment="Right" VerticalAlignment="Center"/>
 
                     </Grid>
                 </DataTemplate>

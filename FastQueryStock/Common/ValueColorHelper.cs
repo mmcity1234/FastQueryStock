@@ -41,7 +41,16 @@ namespace FastQueryStock.Common
                 if (backgroundColor == Brushes.Red || backgroundColor == Brushes.Green)
                     return Brushes.White;
 
+                return GetValueForegroundColor(compareValue, baseValue);
+            }
+            return result;
+        }
 
+        public static Brush GetValueForegroundColor(string compareValue, string baseValue)
+        {
+            Brush result = Brushes.Black;
+            if (!string.IsNullOrEmpty(compareValue) && !string.IsNullOrEmpty(baseValue))
+            {              
                 decimal valueDiff = Convert.ToDecimal(compareValue) - Convert.ToDecimal(baseValue);
 
                 if (valueDiff > 0)
