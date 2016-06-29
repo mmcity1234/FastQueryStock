@@ -11,6 +11,8 @@ namespace StockSDK.Twse
     [JsonObject(MemberSerialization.OptOut)]
     public class StockData
     {
+        private string _currentPrice;
+
         /// <summary>
         /// 股票代號
         /// </summary>
@@ -81,7 +83,22 @@ namespace StockSDK.Twse
         /// 成交價
         /// </summary>
         [JsonProperty(PropertyName = "z")]
-        public string CurrentPrice { get; set; }
+        public string CurrentPrice
+        {
+            get
+            {
+                return string.IsNullOrEmpty(_currentPrice) ?
+                    MediatePrice :
+                    _currentPrice;
+            }
+            set { _currentPrice = value; }
+        }
+
+        /// <summary>
+        /// 試搓價格
+        /// </summary>
+        [JsonProperty(PropertyName = "pz")]
+        public string MediatePrice { get; set; }
 
         /// <summary>
         /// 昨收價格
@@ -125,9 +142,9 @@ namespace StockSDK.Twse
                 decimal current = System.Convert.ToDecimal(CurrentPrice);
                 string changePrice = System.Convert.ToString(current - yesterday);
                 if (current - yesterday > 0)
-                    return "+" + changePrice;                
+                    return "+" + changePrice;
                 else
-                    return changePrice; 
+                    return changePrice;
             }
         }
         /// <summary>

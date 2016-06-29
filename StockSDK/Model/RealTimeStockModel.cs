@@ -90,7 +90,7 @@ namespace StockSDK.Model
         /// <summary>
         /// 系統查詢的時間
         /// </summary>
-        public string QuerySystemTime { get; set; }
+        //public string QuerySystemTime { get; set; }
 
         /// <summary>
         /// 取得或設定上市或上櫃代號

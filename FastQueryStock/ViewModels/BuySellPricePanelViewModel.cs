@@ -3,9 +3,11 @@ using FastQueryStock.Event;
 using FastQueryStock.ViewModels.Controls;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -19,6 +21,12 @@ namespace FastQueryStock.ViewModels
         private Brush _voluemsColor;
         private RealTimeStockItem _currentStockItem;
         private string _currentPrice;
+
+        private static object _buySellCollectionLockObj = new object();
+
+        public ObservableCollection<BuySellVolumeItem> BuySellVolumeList { get; set; }
+
+        public BuySellPriceViewModel PriceListViewModel { get; set; }
 
         public string Title
         {
@@ -61,12 +69,14 @@ namespace FastQueryStock.ViewModels
             }
         }
 
-        public BuySellPriceViewModel PriceListViewModel { get; set; }
-
+     
 
         public BuySellPricePanelViewModel()
         {
             PriceListViewModel = new BuySellPriceViewModel();
+            BuySellVolumeList = new ObservableCollection<BuySellVolumeItem>();
+            BindingOperations.EnableCollectionSynchronization(BuySellVolumeList, _buySellCollectionLockObj);
+
             NotificationCenter.Instance.RegisterEvent<RealTimeStockItem>(EventType.RealTimeStockValue, Update_EventHandler);
         }
 
@@ -79,40 +89,17 @@ namespace FastQueryStock.ViewModels
 
             // set the color of current stock volumes
             if (_currentStockItem == null)
-                VoluemsColor = GetVolumeColor(string.Empty, string.Empty, stockItem.BuyPriceList, stockItem.SellPriceList, stockItem.CurrentPrice);
+                VoluemsColor = ValueColorHelper.GetVolumeColor(string.Empty, string.Empty, stockItem.BuyPriceList, stockItem.SellPriceList, stockItem.CurrentPrice);
             else
-                VoluemsColor = GetVolumeColor(_currentStockItem.BuyPriceList, _currentStockItem.SellPriceList, stockItem.BuyPriceList, stockItem.SellPriceList, stockItem.CurrentPrice);
+                VoluemsColor = ValueColorHelper.GetVolumeColor(_currentStockItem.BuyPriceList, _currentStockItem.SellPriceList, stockItem.BuyPriceList, stockItem.SellPriceList, stockItem.CurrentPrice);
 
             PriceListViewModel.Load(stockItem);
-            _currentStockItem = stockItem;
-        }
 
-        private SolidColorBrush GetVolumeColor(string currentBuyPriceStr, string currentSellPriceStr, string newBuyPriceStr, string newSellPriceStr, string currentPrice)
-        {
-            var currentBuyPriceList = currentBuyPriceStr.Split('_');
-            var currentSellPriceList = currentSellPriceStr.Split('_');
-            var newBuyPriceList = newBuyPriceStr.Split('_');
-            var newSellPriceList = newSellPriceStr.Split('_');
-            if (string.IsNullOrEmpty(currentBuyPriceStr) || string.IsNullOrEmpty(currentSellPriceStr))
-            {
-                if (newBuyPriceList.Contains(currentPrice))
-                    return Brushes.Green;
-                else if (newSellPriceList.Contains(currentPrice))
-                    return Brushes.Red;
-            }
-            // 持續賣
-            else if (currentBuyPriceList.Contains(currentPrice) && newBuyPriceList.Contains(currentPrice))
-                return Brushes.Green;
-            // 持續買
-            else if (currentSellPriceList.Contains(currentPrice) && newSellPriceList.Contains(currentPrice))
-                return Brushes.Red;
-            // 單檔掛價買完
-            else if (currentSellPriceList.Contains(currentPrice) && newBuyPriceList.Contains(currentPrice))
-                return Brushes.Red;
-            // 單檔掛價賣完
-            else if (currentBuyPriceList.Contains(currentPrice) && newSellPriceList.Contains(currentPrice))
-                return Brushes.Green;
-            return Brushes.Black;
+            // 分時明細
+            if(BuySellVolumeList.FirstOrDefault(x => x.Time == stockItem.LatestTime) == null)
+                BuySellVolumeList.Add(new BuySellVolumeItem(stockItem));
+
+            _currentStockItem = stockItem;
         }
 
         public void Close()

@@ -130,6 +130,7 @@
     <Compile Include="ViewModels\BuySellPricePanelViewModel.cs" />
     <Compile Include="ViewModels\Controls\BuySellPriceItem.cs" />
     <Compile Include="ViewModels\Controls\BuySellPriceViewModel.cs" />
+    <Compile Include="ViewModels\Controls\BuySellVolumeItem.cs" />
     <Compile Include="ViewModels\Controls\StockMenuItem.cs" />
     <Compile Include="ViewModels\PttContentViewModel.cs" />
     <Compile Include="ViewModels\StockMainChartViewModel.cs" />
@@ -159,6 +160,10 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\StockInfoItem.cs" />
     <Compile Include="ViewModels\RealTimeStockItem.cs" />
+    <Page Include="Asserts\Resource\ControlResource.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

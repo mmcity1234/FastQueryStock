@@ -51,7 +51,7 @@ namespace FastQueryStock.Event
         /// <typeparam name="T"></typeparam>
         /// <param name="eventType"></param>
         /// <param name="model"></param>
-        public void NotifyEvent<T>(EventType eventType, T model) where T : class
+        public void NotifyEvent<T>(EventType eventType, T model) where T : new()
         {
             List<object> eventList;
             if (eventDict.TryGetValue(eventType, out eventList))

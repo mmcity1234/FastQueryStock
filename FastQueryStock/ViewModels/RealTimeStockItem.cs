@@ -319,7 +319,7 @@ namespace FastQueryStock.ViewModels
                 ChangePrice = model.ChangePrice,
                 HighestPrice = model.HighestPrice,
                 LowestPrice = model.LowestPrice,
-                LatestTime = model.QuerySystemTime,
+                LatestTime = model.LastTradeTime,
                 OpenPrice = model.OpenPrice,
                 Volumes = Math.Truncate(vol),
                 CurrentTimeVolumes = model.CurrentTimeVolumes,

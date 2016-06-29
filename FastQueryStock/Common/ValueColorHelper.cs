@@ -60,5 +60,33 @@ namespace FastQueryStock.Common
             }
             return result;
         }
+
+        public static Brush GetVolumeColor(string currentBuyPriceStr, string currentSellPriceStr, string newBuyPriceStr, string newSellPriceStr, string currentPrice)
+        {
+            var currentBuyPriceList = currentBuyPriceStr.Split('_');
+            var currentSellPriceList = currentSellPriceStr.Split('_');
+            var newBuyPriceList = newBuyPriceStr.Split('_');
+            var newSellPriceList = newSellPriceStr.Split('_');
+            if (string.IsNullOrEmpty(currentBuyPriceStr) || string.IsNullOrEmpty(currentSellPriceStr))
+            {
+                if (newBuyPriceList.Contains(currentPrice))
+                    return Brushes.Green;
+                else if (newSellPriceList.Contains(currentPrice))
+                    return Brushes.Red;
+            }
+            // 持續賣
+            else if (currentBuyPriceList.Contains(currentPrice) && newBuyPriceList.Contains(currentPrice))
+                return Brushes.Green;
+            // 持續買
+            else if (currentSellPriceList.Contains(currentPrice) && newSellPriceList.Contains(currentPrice))
+                return Brushes.Red;
+            // 單檔掛價買完
+            else if (currentSellPriceList.Contains(currentPrice) && newBuyPriceList.Contains(currentPrice))
+                return Brushes.Red;
+            // 單檔掛價賣完
+            else if (currentBuyPriceList.Contains(currentPrice) && newSellPriceList.Contains(currentPrice))
+                return Brushes.Green;
+            return Brushes.Black;
+        }
     }
 }

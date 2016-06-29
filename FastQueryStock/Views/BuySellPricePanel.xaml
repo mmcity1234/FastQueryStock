@@ -18,7 +18,13 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Steel.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <Style x:Key="RightAlignmentStyle" TargetType="{x:Type TextBlock }">
+                <Setter Property="TextAlignment" Value="Right" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+            </Style>
         </ResourceDictionary>
     </MahControls:MetroWindow.Resources>
 
@@ -27,35 +33,74 @@
     </MahControls:MetroWindow.GlowBrush>
 
 
+    <MahControls:MetroAnimatedSingleRowTabControl >
+        <TabItem Header="掛價" HeaderTemplate="{DynamicResource TabItemHeaderTemplate}">
+            <Grid Margin="-2,0,2,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="30"/>
+                </Grid.RowDefinitions>
+                <Grid.Triggers>
+                    <EventTrigger RoutedEvent="Grid.Loaded">
+                        <BeginStoryboard>
+                            <Storyboard >
+                                <DoubleAnimation From="0" To="1" Storyboard.TargetName="stockValueChart" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"></DoubleAnimation>
+                                <PointAnimation  From="1,1" To="0,0" Storyboard.TargetName="stockValueChart" Storyboard.TargetProperty="(UIElement.RenderTransformOrigin)"></PointAnimation>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Grid.Triggers>
+                <userControl:BuySellPriceControl DataContext="{Binding PriceListViewModel}" x:Name="stockValueChart" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                <Grid Grid.Row="1" HorizontalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="70"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="成交價" Margin="20,5,0,5"/>
+                    <TextBlock  Grid.Column="1" Text="{Binding CurrentPrice}" Margin="10,5,0,5"/>
 
-    <Grid Margin="-2,0,2,0">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="30"/>
-        </Grid.RowDefinitions>
-        <Grid.Triggers>
-            <EventTrigger RoutedEvent="Grid.Loaded">
-                <BeginStoryboard>
-                    <Storyboard >
-                        <DoubleAnimation From="0" To="1" Storyboard.TargetName="stockValueChart" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"></DoubleAnimation>
-                        <PointAnimation  From="1,1" To="0,0" Storyboard.TargetName="stockValueChart" Storyboard.TargetProperty="(UIElement.RenderTransformOrigin)"></PointAnimation>
-                    </Storyboard>
-                </BeginStoryboard>
-            </EventTrigger>
-        </Grid.Triggers>
-        <userControl:BuySellPriceControl DataContext="{Binding PriceListViewModel}" x:Name="stockValueChart" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,5,0,0"/>
-        <Grid Grid.Row="1" HorizontalAlignment="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="70"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="70"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="成交價" Margin="20,5,0,5"/>
-            <TextBlock  Grid.Column="1" Text="{Binding CurrentPrice}" Margin="10,5,0,5"/>
+                    <TextBlock Grid.Column="2" Text="單量" Margin="10,5,0,5"/>
+                    <TextBlock Grid.Column="3" Text="{Binding CurrentVolumes}" Foreground="{Binding VoluemsColor}" Margin="10,5,0,5"/>
+                </Grid>
+            </Grid>
+        </TabItem>
+        <TabItem Header="交易明細" HeaderTemplate="{DynamicResource TabItemHeaderTemplate}">
+            <Grid Margin="0,5,15,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>                    
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="65"/>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="時間" Style="{StaticResource RightAlignmentStyle}"/>
+                <TextBlock Grid.Column="1" Text="成交價" Style="{StaticResource RightAlignmentStyle}"/>
+                <TextBlock Grid.Column="2" Text="單量" Style="{StaticResource RightAlignmentStyle}"/>
+                
+                <ListBox Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding BuySellVolumeList}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="60" />
+                                    <ColumnDefinition Width="70" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="2" Text="單量" Margin="10,5,0,5"/>
-            <TextBlock Grid.Column="3" Text="{Binding CurrentVolumes}" Foreground="{Binding VoluemsColor}" Margin="10,5,0,5"/>
-        </Grid>
-    </Grid>
+                                <TextBlock Text="{Binding Time}" Foreground="{Binding SellPriceMarkedColor}" Style="{StaticResource RightAlignmentStyle}"/>
+                                <TextBlock Text="{Binding CurrentPrice}" Grid.Column="1" Foreground="{Binding CurrentPriceColor}" Background="{Binding CurrentPriceBackgroundColor}" Style="{StaticResource RightAlignmentStyle}"/>
+                                <TextBlock Text="{Binding Volumes}" Grid.Column="2" Foreground="{Binding VolumesColor}" Style="{StaticResource RightAlignmentStyle}"/>
+
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </TabItem>
+
+    </MahControls:MetroAnimatedSingleRowTabControl>
 </MahControls:MetroWindow >

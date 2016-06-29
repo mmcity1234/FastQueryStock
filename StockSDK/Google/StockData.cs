@@ -120,7 +120,7 @@ namespace StockSDK.Google
                 CurrentPrice = this.CurrentPrice,
                 HighestPrice = this.HighestPrice,
                 Id = this.Id,
-                QuerySystemTime = this.LatestTime,
+                LastTradeTime = this.LatestTime,
                 LowestPrice = this.LowestPrice,
                 Name = this.Name,
                 OpenPrice = this.OpenPrice,
