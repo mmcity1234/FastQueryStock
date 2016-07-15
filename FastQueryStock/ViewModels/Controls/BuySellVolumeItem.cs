@@ -20,15 +20,14 @@ namespace FastQueryStock.ViewModels.Controls
 
         public BuySellVolumeItem() { }
 
-        public BuySellVolumeItem(RealTimeStockItem item)
+        public BuySellVolumeItem(RealTimeStockItem currentItem, Brush volumeColor)
         {            
-            CurrentPrice = item.CurrentPrice;
-            Volumes = item.CurrentTimeVolumes;
-            CurrentPriceColor = item.CurrentPriceValueColor;
-            CurrentPriceBackgroundColor = item.CurrentPriceValueBackgroundColor;
-            VolumesColor = ValueColorHelper.GetVolumeColor(string.Empty, string.Empty, item.BuyPriceList, item.SellPriceList, item.CurrentPrice);
-
-            Time = item.LatestTime;
+            CurrentPrice = currentItem.CurrentPrice;
+            Volumes = currentItem.CurrentTimeVolumes;
+            CurrentPriceColor = currentItem.CurrentPriceValueColor;
+            CurrentPriceBackgroundColor = currentItem.CurrentPriceValueBackgroundColor;
+            VolumesColor = volumeColor;
+            Time = currentItem.LatestTime;
         }
     }
 }

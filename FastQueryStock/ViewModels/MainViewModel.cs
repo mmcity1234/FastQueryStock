@@ -225,7 +225,7 @@ namespace FastQueryStock.ViewModels
                     }
                     catch (Exception e)
                     {
-                        Dialog.ShowError("PTT發文通知監控錯誤，詳細原因 :" + e.Message);
+                        //Dialog.ShowError("PTT發文通知監控錯誤，詳細原因 :" + e.Message);
                     }
                 });
             }

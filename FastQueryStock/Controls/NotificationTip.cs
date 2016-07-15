@@ -12,10 +12,10 @@ namespace FastQueryStock.Controls
     public class NotificationTip
     {
         static NotifyIcon notifyIcon = new NotifyIcon();
-       // static TaskbarIcon notifyIcon = new TaskbarIcon();
+        //static TaskbarIcon notifyIcon = new TaskbarIcon();
         static NotificationTip()
         {
-            //notifyIcon.Visible = true;
+           notifyIcon.Visible = true;
            notifyIcon.Icon = new System.Drawing.Icon(Path.GetFullPath(@"Images\stockicon.ico"));
             //notifyIcon.Text = "TWSE Stock";
         }
