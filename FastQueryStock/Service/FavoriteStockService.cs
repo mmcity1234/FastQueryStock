@@ -25,7 +25,7 @@ namespace FastQueryStock.Service
                     Id = item.Id,
                     ParentStock = stockEntity,
                     // TODO : it must rewrite the category source from category table
-                    //CustomCategory = item.Category,
+                    CustomCategory = item.CustomCategory,
                     Order = item.Order
 
                 };
@@ -34,6 +34,24 @@ namespace FastQueryStock.Service
 
             }
         }
+
+        public StockInfoItem GetById(string id)
+        {
+            using (StockUnitOfWork db = new StockUnitOfWork())
+            {
+                var entity = db.FavoriteStock.GetById(id);
+                return new StockInfoItem
+                {
+                    Id = entity.Id,
+                    Category = entity.ParentStock.Category,
+                    CustomCategory = entity.CustomCategory,
+                    MarketType = entity.ParentStock.MarketType,
+                    Name = entity.ParentStock.Name,
+                    Order = entity.Order
+                };
+            }
+        }
+
         public List<StockInfoItem> GetAll()
         {
             List<StockInfoItem> allResult = new List<StockInfoItem>();
@@ -46,7 +64,7 @@ namespace FastQueryStock.Service
                     allResult.Add(new StockInfoItem
                     {
                         Id = item.Id,
-                        // TODO : it must rewrite the category source from category table
+                        CustomCategory = item.CustomCategory,
                         Category = item.ParentStock.Category,
                         MarketType = item.ParentStock.MarketType,
                         Name = item.ParentStock.Name,
@@ -78,6 +96,40 @@ namespace FastQueryStock.Service
             return lastOrder;
         }
 
+
+        public void ChnageOrder(StockInfoItem originalItem, StockInfoItem targetItem)
+        {
+            if (originalItem.Order == targetItem.Order)
+                return;
+
+            using (StockUnitOfWork db = new StockUnitOfWork())
+            {
+                int changeStartInex = originalItem.Order < targetItem.Order ? originalItem.Order : targetItem.Order;
+                int changeEndInex = originalItem.Order > targetItem.Order ? originalItem.Order : targetItem.Order;
+
+                var changeList = db.FavoriteStock.GetAll(x => x.CustomCategory == originalItem.CustomCategory).
+                    OrderBy(x => x.Order).
+                    Where(x => x.Order >= changeStartInex && x.Order <= changeEndInex).
+                    ToList();
+                    
+                // move the original item to upper
+                if (originalItem.Order > targetItem.Order)
+                {  
+                    // 在異動的範圍內先全部累加排序的值，最後再將來源(最後一個)的排序值進行異動
+                    changeList.ToList().ForEach(x => x.Order++);
+                    changeList[changeList.Count - 1].Order = changeList[0].Order - 1;
+                }
+                else
+                {
+                    changeList.ToList().ForEach(x => x.Order--);
+                    changeList[0].Order = changeList[changeList.Count - 1].Order + 1;
+                }
+
+                foreach (var item in changeList)
+                    db.FavoriteStock.Update(item);
+                db.SaveChanges();
+            }
+        }
 
         public void Delete(string Id)
         {

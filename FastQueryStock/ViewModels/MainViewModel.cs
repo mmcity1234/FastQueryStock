@@ -26,7 +26,7 @@ namespace FastQueryStock.ViewModels
         private string _stockNumber;
         private int _timeInterval;
         private bool _isAutoRefresh;
-        private string _backgroundColor = "#FFFFFFFF";
+        private double _backgroundOpacity = 0;
         private IFavoriteStockService _favoriteStockService;
         private ILocalStockService _localStockService;
         private IPttStockQueryService _pttService;
@@ -49,13 +49,13 @@ namespace FastQueryStock.ViewModels
         /// <summary>
         /// The main windows background color
         /// </summary>
-        public string BackgroundColor
+        public double BackgroundOpacity
         {
-            get { return _backgroundColor; }
+            get { return _backgroundOpacity; }
             set
             {
-                _backgroundColor = value;
-                NotifyPropertyChanged("BackgroundColor");
+                _backgroundOpacity = value;
+                NotifyPropertyChanged("BackgroundOpacity");
             }
         }
 
@@ -160,9 +160,9 @@ namespace FastQueryStock.ViewModels
         public ICommand AddStockCommand { get; set; }
         public ICommand DeleteStockCommand { get; set; }
         public ICommand AutoRefreshCheckedCommand { get; set; }
-        public ICommand SettingCommand { get; set; }
-        public ICommand SafeModeCheckedCommand { get; set; }
+        public ICommand SettingCommand { get; set; }       
         public ICommand UpdateAllStockCommand { get; set; }
+        public ICommand StockItemMovedCommand { get; set; }
 
         public ICommand StockItemDoubleClickCommand { get; set; }
 
@@ -182,9 +182,9 @@ namespace FastQueryStock.ViewModels
             AddStockCommand = new DelegateCommand(AddStock_Click);
             DeleteStockCommand = new DelegateCommand(DeleteStock_Click);
             AutoRefreshCheckedCommand = new DelegateCommand(AutoRefresh_Checked);
-            SafeModeCheckedCommand = new DelegateCommand(SafeMode_Checked);
             UpdateAllStockCommand = new DelegateCommand(UpdateAllStock_Click);
             StockItemDoubleClickCommand = new DelegateCommand<RealTimeStockItem>(StockItem_DoubleClick);
+            StockItemMovedCommand = new DelegateCommand<ItemMoveEventArgs<RealTimeStockItem>>(StockItem_ItemMoved);
             ChengWayeModelCommand = new DelegateCommand(ChengWayeMode_Checked);
             TimeInterval = 10;
             IsAutoRefresh = true;
@@ -234,18 +234,6 @@ namespace FastQueryStock.ViewModels
                 _chengWayePollingCancelToken.Cancel();
             }
         }
-
-        /// <summary>
-        /// if comfirm to the safe mode, stock panel would change the background to Transparency
-        /// </summary>
-        private void SafeMode_Checked()
-        {
-            if (!IsSafeMode)
-                BackgroundColor = "#FFFFFFFF";
-            else
-                BackgroundColor = "#01000000";
-        }
-
 
         /// <summary>
         /// Start to load data
@@ -371,6 +359,24 @@ namespace FastQueryStock.ViewModels
         private void StockItem_DoubleClick(RealTimeStockItem realTimeStock)
         {
             // do not thing         
+        }
+
+        /// <summary>
+        /// Trigger an event when stock item change 
+        /// </summary>
+        /// <param name="args"></param>
+        private void StockItem_ItemMoved(ItemMoveEventArgs<RealTimeStockItem> args)
+        {
+            try
+            {
+                StockInfoItem originalStockItem = _favoriteStockService.GetById(args.OriginalItem.Id);
+                StockInfoItem targetStockItem = _favoriteStockService.GetById(args.TargetItem.Id);
+                _favoriteStockService.ChnageOrder(originalStockItem, targetStockItem);
+            }
+            catch(Exception e)
+            {
+                Dialog.ShowError(string.Format("更改順序發生錯誤，詳細原因 : {0}", e.Message));
+            }
         }
 
         /// <summary>

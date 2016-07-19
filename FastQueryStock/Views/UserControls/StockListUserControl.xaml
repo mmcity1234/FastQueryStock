@@ -48,11 +48,11 @@
             <TextBlock Text="最高" Grid.Column="4" Style="{StaticResource ResourceKey=StockListHeaderSytle}"/>
 
         </Grid>
-        <ListBox ItemsSource="{Binding ElementName=stockListControl, Path=ItemSources}" Background="#01000000" Grid.Row="1"
-                 SelectedItem="{Binding ElementName=stockListControl, Path=SelectedItem}" SelectionMode="Single" Grid.ColumnSpan="2"
+        <controls:StockDropListBox ItemsSource="{Binding ElementName=stockListControl, Path=ItemSources}" Background="#01000000" Grid.Row="1"
+                 SelectedItem="{Binding ElementName=stockListControl, Path=SelectedItem}" SelectionMode="Single" Grid.ColumnSpan="2" BorderThickness="0" 
+                 ItemMove="StockListBox_ItemMoved"
                  MouseDoubleClick="StockListBox_MouseDoubleClick" ContextMenuOpening="ListBox_ContextMenuOpening" x:Name="listBox">
 
-            <!--BUG -->
             <ListBox.ContextMenu>
                 <ContextMenu ItemsSource="{Binding Source={StaticResource Proxy}, Path=Data.MenuItems}" >
                     <!--<ContextMenu ItemsSource="{Binding ElementName=stockListControl, Path=MenuItems}" >-->
@@ -71,7 +71,7 @@
                 </ContextMenu>
             </ListBox.ContextMenu>
 
-            <ListBox.ItemTemplate>
+            <controls:StockDropListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>
                         <!-- Tool tip-->
@@ -138,7 +138,7 @@
                         <TextBlock Grid.Column="4" Text="{Binding HighestPrice}" Foreground="{Binding HighestPriceValueColor}" Background="{Binding HighestPriceValueBackgroundColor}" HorizontalAlignment="Right"/>
                     </Grid>
                 </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+            </controls:StockDropListBox.ItemTemplate>
+        </controls:StockDropListBox>
     </Grid>
 </UserControl>

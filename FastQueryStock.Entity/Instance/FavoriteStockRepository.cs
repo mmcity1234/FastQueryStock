@@ -31,7 +31,10 @@ namespace FastQueryStock.Entity.Instance
         public override List<FavoriteStockEntity> GetAll(Expression<Func<FavoriteStockEntity, bool>> condition = null)
         {
             var dbSet = Context.Set<FavoriteStockEntity>();
-            return dbSet.Include(entity => entity.ParentStock).ToList();
+            if(condition == null)
+                return dbSet.Include(entity => entity.ParentStock).ToList();
+            else
+                return dbSet.Where(condition).Include(entity => entity.ParentStock).ToList();
         }
     }
 }

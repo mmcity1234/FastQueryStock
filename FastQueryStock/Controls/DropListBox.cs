@@ -14,6 +14,7 @@ namespace FastQueryStock.Controls
     public class DropListBox<T> : ListBox where T : class
     {
         private Point _dragStartPoint;
+        public event EventHandler<ItemMoveEventArgs<T>> ItemMove;
 
         private P FindVisualParent<P>(DependencyObject child)
             where P : DependencyObject
@@ -31,23 +32,11 @@ namespace FastQueryStock.Controls
 
         public DropListBox()
         {
-            this.PreviewMouseMove += ListBox_PreviewMouseMove;
-
-            var style = new Style(typeof(ListBoxItem));
-
-            style.Setters.Add(new Setter(ListBoxItem.AllowDropProperty, true));
-
-            style.Setters.Add(
-                new EventSetter(
-                    ListBoxItem.PreviewMouseLeftButtonDownEvent,
-                    new MouseButtonEventHandler(ListBoxItem_PreviewMouseLeftButtonDown)));
-
-            style.Setters.Add(
-                    new EventSetter(
-                        ListBoxItem.DropEvent,
-                        new DragEventHandler(ListBoxItem_Drop)));
-
-            this.ItemContainerStyle = style;
+            this.AllowDrop = true;
+            this.PreviewMouseMove += ListBox_PreviewMouseMove;            
+            this.PreviewMouseLeftButtonDown += ListBoxItem_PreviewMouseLeftButtonDown;
+            this.Drop += ListBoxItem_Drop;          
+           
         }
 
         private void ListBox_PreviewMouseMove(object sender, MouseEventArgs e)
@@ -74,16 +63,48 @@ namespace FastQueryStock.Controls
 
         private void ListBoxItem_Drop(object sender, DragEventArgs e)
         {
-            if (sender is ListBoxItem)
+            if (sender is ListBox)
             {
+                ListBox parent = (ListBox)sender;
                 var source = e.Data.GetData(typeof(T)) as T;
-                var target = ((ListBoxItem)sender).DataContext as T;
+                var target = GetDataFromListBox(parent, e.GetPosition(parent)) as T;
 
                 int sourceIndex = this.Items.IndexOf(source);
                 int targetIndex = this.Items.IndexOf(target);
 
                 Move(source, sourceIndex, targetIndex);
+
+                if (ItemMove != null)
+                {
+                    ItemMove(sender, new ItemMoveEventArgs<T>(source, target, sourceIndex, targetIndex));
+                }
             }
+        }
+
+        private static object GetDataFromListBox(ListBox source, Point point)
+        {
+            UIElement element = source.InputHitTest(point) as UIElement;
+            if (element != null)
+            {
+                object data = DependencyProperty.UnsetValue;
+                while (data == DependencyProperty.UnsetValue)
+                {
+                    data = source.ItemContainerGenerator.ItemFromContainer(element);
+                    if (data == DependencyProperty.UnsetValue)
+                    {
+                        element = VisualTreeHelper.GetParent(element) as UIElement;
+                    }
+                    if (element == source)
+                    {
+                        return null;
+                    }
+                }
+                if (data != DependencyProperty.UnsetValue)
+                {
+                    return data;
+                }
+            }
+            return null;
         }
 
         private void Move(T source, int sourceIndex, int targetIndex)

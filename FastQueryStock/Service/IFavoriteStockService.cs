@@ -13,8 +13,10 @@ namespace FastQueryStock.Service
     public interface IFavoriteStockService
     {
         void Add(StockInfoItem item);
-       
+
         List<StockInfoItem> GetAll();
+
+        StockInfoItem GetById(string id);
 
         void Delete(string Id);
 
@@ -24,5 +26,12 @@ namespace FastQueryStock.Service
         /// <param name="category"></param>
         /// <returns></returns>
         int GetLastOrder(int CustomCategoryId);
+
+        /// <summary>
+        /// Change the stock sequence in this category
+        /// </summary>
+        /// <param name="changeItem"></param>
+        /// <param name="newIndex"></param>
+        void ChnageOrder(StockInfoItem originalItem, StockInfoItem targetItem);
     }
 }

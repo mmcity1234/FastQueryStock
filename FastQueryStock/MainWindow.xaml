@@ -7,7 +7,7 @@
         xmlns:materialMenu="clr-namespace:MaterialMenu;assembly=MaterialMenu"
         xmlns:userControls="clr-namespace:FastQueryStock.UserControls"
         xmlns:local="clr-namespace:FastQueryStock"      
-        mc:Ignorable="d"  Background="{Binding BackgroundColor}"  
+        mc:Ignorable="d"  
         Title="參考看看" Height="350" Width="350">
 
     <MahControls:MetroWindow.Resources>
@@ -55,7 +55,9 @@
         </MahControls:WindowCommands>
     </MahControls:MetroWindow.RightWindowCommands>
 
-
+    <MahControls:MetroWindow.Background>
+        <SolidColorBrush Color="White" Opacity="{Binding BackgroundOpacity}" />
+    </MahControls:MetroWindow.Background>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -97,6 +99,7 @@
         <userControls:StockListUserControl ItemSources="{Binding StockListViewModel.StockList}" Grid.Row="1"
                                            SelectedItem="{Binding SelectedStockItem, Mode=TwoWay}" 
                                            ItemDoubleClickCommand="{Binding StockItemDoubleClickCommand}"
+                                           ItemMovedCommand="{Binding StockItemMovedCommand}"
                                            MenuItems="{Binding MenuList}"/>
 
         <!--Setting panel-->
@@ -124,8 +127,8 @@
                             </StackPanel>
 
                             <!--Boss mode-->
-                            <TextBlock Text="使用老闆模式" Style="{DynamicResource SettingTitleTextStyle}"/>
-                            <MahControls:ToggleSwitch CheckChangedCommand="{Binding SafeModeCheckedCommand}"  IsChecked="{Binding IsSafeMode, Mode=TwoWay}" Style="{DynamicResource ToggleSwitchSettingStyle}"  HorizontalAlignment="Left"/>
+                            <TextBlock Text="老闆模式等級" Style="{DynamicResource SettingTitleTextStyle}"/>
+                            <Slider Value="{Binding BackgroundOpacity}" HorizontalAlignment="Left" Width="120" Maximum="1" Minimum="0" />
 
                             <!--Update database-->
                             <TextBlock Text="上市上櫃資料" Style="{DynamicResource SettingTitleTextStyle}"/>

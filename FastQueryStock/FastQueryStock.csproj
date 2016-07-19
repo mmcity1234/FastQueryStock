@@ -109,6 +109,7 @@
     <Compile Include="Common\TaskExtension.cs" />
     <Compile Include="Common\ValueColorHelper.cs" />
     <Compile Include="Controls\DropListBox.cs" />
+    <Compile Include="Controls\ItemMoveEventArgs.cs" />
     <Compile Include="Controls\NotificationTip.cs" />
     <Compile Include="Controls\StockDropListBox.cs" />
     <Compile Include="Event\EventType.cs" />

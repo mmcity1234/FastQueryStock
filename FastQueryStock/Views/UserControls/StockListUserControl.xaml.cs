@@ -1,4 +1,6 @@
-﻿using FastQueryStock.ViewModels.Controls;
+﻿using FastQueryStock.Controls;
+using FastQueryStock.ViewModels;
+using FastQueryStock.ViewModels.Controls;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -37,6 +39,10 @@ namespace FastQueryStock.UserControls
             DependencyProperty.Register("ItemDoubleClickCommand", typeof(ICommand),
                 typeof(StockListUserControl));
 
+        public static readonly DependencyProperty ItemMovedCommandProperty =
+           DependencyProperty.Register("ItemMovedCommand", typeof(ICommand),
+               typeof(StockListUserControl));
+
         public static readonly DependencyProperty MenuItemsProperty =
          DependencyProperty.Register("MenuItems", typeof(IEnumerable),
              typeof(StockListUserControl),
@@ -59,6 +65,12 @@ namespace FastQueryStock.UserControls
             set { SetValue(ItemDoubleClickCommandProperty, value); }
         }
 
+        public ICommand ItemMovedCommand
+        {
+            get { return (ICommand)GetValue(ItemMovedCommandProperty); }
+            set { SetValue(ItemMovedCommandProperty, value); }
+        }
+
         public IEnumerable MenuItems
         {
             get { return (IEnumerable)GetValue(MenuItemsProperty); }
@@ -69,6 +81,7 @@ namespace FastQueryStock.UserControls
         public StockListUserControl()
         {
             InitializeComponent();
+            
         }
 
         #region Event Handler
@@ -89,6 +102,14 @@ namespace FastQueryStock.UserControls
         {
             var s = listBox;
             var sss = stockListControl.Resources;
+        }
+
+        private void StockListBox_ItemMoved(object sender, ItemMoveEventArgs<RealTimeStockItem> e)
+        {
+            if (ItemMovedCommand != null)
+            {
+                ItemMovedCommand.Execute(e);
+            }
         }
     }
 }

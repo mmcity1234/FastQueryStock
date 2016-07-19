@@ -15,6 +15,12 @@ namespace FastQueryStock.ViewModels
 
         public string Id { get; set; }
 
+
+        /// <summary>
+        /// 使用者自訂的分類頁籤索引
+        /// </summary>
+        public int CustomCategory { get; set; }
+
         /// <summary>
         /// 產業類別
         /// </summary>
