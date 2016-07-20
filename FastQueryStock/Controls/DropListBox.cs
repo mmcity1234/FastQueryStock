@@ -40,12 +40,8 @@ namespace FastQueryStock.Controls
         }
 
         private void ListBox_PreviewMouseMove(object sender, MouseEventArgs e)
-        {
-            Point point = e.GetPosition(null);
-            Vector diff = _dragStartPoint - point;
-            if (e.LeftButton == MouseButtonState.Pressed &&
-                (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
-                    Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance))
+        {          
+            if (e.LeftButton == MouseButtonState.Pressed)
             {
                 var lb = sender as ListBox;
                 var lbi = FindVisualParent<ListBoxItem>(((DependencyObject)e.OriginalSource));
@@ -58,7 +54,7 @@ namespace FastQueryStock.Controls
 
         private void ListBoxItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            _dragStartPoint = e.GetPosition(null);
+            _dragStartPoint = e.GetPosition(null);      
         }
 
         private void ListBoxItem_Drop(object sender, DragEventArgs e)
@@ -72,12 +68,13 @@ namespace FastQueryStock.Controls
                 int sourceIndex = this.Items.IndexOf(source);
                 int targetIndex = this.Items.IndexOf(target);
 
-                Move(source, sourceIndex, targetIndex);
-
+                var moveArgs = new ItemMoveEventArgs<T>(source, target, sourceIndex, targetIndex);
                 if (ItemMove != null)
-                {
-                    ItemMove(sender, new ItemMoveEventArgs<T>(source, target, sourceIndex, targetIndex));
-                }
+                    ItemMove(sender, moveArgs);
+               
+                // move the list box item
+                if(!moveArgs.Cancel)
+                    Move(source, sourceIndex, targetIndex);
             }
         }
 

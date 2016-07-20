@@ -1,4 +1,5 @@
 ﻿using FastQueryStock.Common;
+using FastQueryStock.Common.Exceptions;
 using FastQueryStock.Controls;
 using FastQueryStock.Service;
 using FastQueryStock.ViewModels.Controls;
@@ -271,7 +272,7 @@ namespace FastQueryStock.ViewModels
             StockInfoItem stockItem = null;
             try
             {
-                string localStockNum = StockNumber;
+                string localStockNum = StockNumber.ToUpper();
 
                 stockItem = _localStockService.Get(localStockNum);
                 var stockData = await _queryService.GetMultipleRealTimeStockAsync(new List<StockInfoItem> { stockItem });
@@ -373,8 +374,15 @@ namespace FastQueryStock.ViewModels
                 StockInfoItem targetStockItem = _favoriteStockService.GetById(args.TargetItem.Id);
                 _favoriteStockService.ChnageOrder(originalStockItem, targetStockItem);
             }
+            catch(DataNotFoundException e)
+            {
+                args.Cancel = true;
+                string stockName = args.OriginalItem.Id == e.Name ? args.OriginalItem.Name : args.TargetItem.Name;
+                Dialog.ShowError(string.Format("股票 [{0}] 無法異動", stockName));
+            }
             catch(Exception e)
             {
+                args.Cancel = true;
                 Dialog.ShowError(string.Format("更改順序發生錯誤，詳細原因 : {0}", e.Message));
             }
         }

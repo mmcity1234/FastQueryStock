@@ -16,6 +16,11 @@ namespace FastQueryStock.Controls
 
         public int TargetIndex { get; set; }
 
+        /// <summary>
+        /// 取消移動動作
+        /// </summary>
+        public bool Cancel { get; set; }
+
         public ItemMoveEventArgs(T original, T target, int sourceIndex, int targetIndex)
         {
             OriginalItem = original;

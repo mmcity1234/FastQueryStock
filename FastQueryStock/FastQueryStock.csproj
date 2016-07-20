@@ -106,6 +106,7 @@
     <Compile Include="Common\BindingProxy.cs" />
     <Compile Include="Common\DateTimeUtils.cs" />
     <Compile Include="Common\DelegateCommand.cs" />
+    <Compile Include="Common\Exceptions\DataNotFoundException.cs" />
     <Compile Include="Common\TaskExtension.cs" />
     <Compile Include="Common\ValueColorHelper.cs" />
     <Compile Include="Controls\DropListBox.cs" />

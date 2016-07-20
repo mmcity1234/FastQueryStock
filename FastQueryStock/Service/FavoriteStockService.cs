@@ -1,4 +1,5 @@
-﻿using FastQueryStock.Entity.Context;
+﻿using FastQueryStock.Common.Exceptions;
+using FastQueryStock.Entity.Context;
 using FastQueryStock.Entity.Entity;
 using FastQueryStock.ViewModels;
 using System;
@@ -40,6 +41,8 @@ namespace FastQueryStock.Service
             using (StockUnitOfWork db = new StockUnitOfWork())
             {
                 var entity = db.FavoriteStock.GetById(id);
+                if (entity == null)
+                    throw new DataNotFoundException("查無此股票代號 [" + id + "]", id);
                 return new StockInfoItem
                 {
                     Id = entity.Id,
