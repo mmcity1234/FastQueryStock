@@ -162,7 +162,7 @@ namespace FastQueryStock.ViewModels
         public ICommand AddStockCommand { get; set; }
         public ICommand DeleteStockCommand { get; set; }
         public ICommand AutoRefreshCheckedCommand { get; set; }
-        public ICommand SettingCommand { get; set; }       
+        public ICommand SettingCommand { get; set; }
         public ICommand UpdateAllStockCommand { get; set; }
         public ICommand StockItemMovedCommand { get; set; }
 
@@ -371,31 +371,18 @@ namespace FastQueryStock.ViewModels
         {
             try
             {
-                Stopwatch watch = new Stopwatch();
-                watch.Start();
                 StockInfoItem originalStockItem = _favoriteStockService.GetById(args.OriginalItem.Id);
-                watch.Stop();
-                Debug.WriteLine(watch.ElapsedMilliseconds);
-
-                watch.Reset();
-                watch.Start();
                 StockInfoItem targetStockItem = _favoriteStockService.GetById(args.TargetItem.Id);
-                watch.Stop();
-                Debug.WriteLine(watch.ElapsedMilliseconds);
-
-                watch.Reset();
-                watch.Start();
                 _favoriteStockService.ChnageOrder(originalStockItem, targetStockItem);
-                watch.Stop();
-                Debug.WriteLine(watch.ElapsedMilliseconds);
+
             }
-            catch(DataNotFoundException e)
+            catch (DataNotFoundException e)
             {
                 args.Cancel = true;
                 string stockName = args.OriginalItem.Id == e.Name ? args.OriginalItem.Name : args.TargetItem.Name;
                 Dialog.ShowError(string.Format("股票 [{0}] 無法異動", stockName));
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 args.Cancel = true;
                 Dialog.ShowError(string.Format("更改順序發生錯誤，詳細原因 : {0}", e.Message));
