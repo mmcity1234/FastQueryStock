@@ -23,7 +23,7 @@ namespace FastQueryStock.ViewModels
         private string _lastTime;
         private string _changePercentage;
         private double _volumes;
-        private string _currentTimeVolumes;
+        private string _lastTradeVolumes;
         private string _buyQuantityList;
         private string _sellPriceList;
         private string _buyPriceList;
@@ -142,13 +142,13 @@ namespace FastQueryStock.ViewModels
         /// <summary>
         /// 當筆成交量
         /// </summary>
-        public string CurrentTimeVolumes
+        public string LastTradeVolumes
         {
-            get { return _currentTimeVolumes; }
+            get { return _lastTradeVolumes; }
             set
             {
-                _currentTimeVolumes = value;
-                NotifyPropertyChanged("CurrentTimeVolumes");
+                _lastTradeVolumes = value;
+                NotifyPropertyChanged("LastTradeVolumes");
 
             }
         }
@@ -299,6 +299,11 @@ namespace FastQueryStock.ViewModels
         public string ExchangeTypeKey { get; private set; }
 
         /// <summary>
+        /// 取得或設定目前的成交數量
+        /// </summary>
+        public string CurrentTradeVolumes { get; set; }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="model"></param>
@@ -322,7 +327,8 @@ namespace FastQueryStock.ViewModels
                 LatestTime = model.LastTradeTime,
                 OpenPrice = model.OpenPrice,
                 Volumes = Math.Truncate(vol),
-                CurrentTimeVolumes = model.CurrentTimeVolumes,
+                LastTradeVolumes = model.LastTradeVolumes,
+                CurrentTradeVolumes = model.CurrentTradeVolumes,
                 LimitUp = model.LimitUp,
                 LimitDown = model.LimitDown,
                 YesterdayPrice = model.YesterdayPrice,
@@ -349,7 +355,7 @@ namespace FastQueryStock.ViewModels
             this.LowestPrice = newData.LowestPrice;
             this.Volumes = newData.Volumes;
             this.LatestTime = newData.LatestTime;
-            this.CurrentTimeVolumes = newData.CurrentTimeVolumes;
+            this.LastTradeVolumes = newData.LastTradeVolumes;
             this.BuyPriceList = newData.BuyPriceList;
             this.BuyQuantityList = newData.BuyQuantityList;
             this.SellPriceList = newData.SellPriceList;

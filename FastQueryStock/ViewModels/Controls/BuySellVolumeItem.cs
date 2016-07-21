@@ -17,13 +17,15 @@ namespace FastQueryStock.ViewModels.Controls
         public Brush CurrentPriceBackgroundColor { get; set; }
 
         public string Time { get; set; }
+        public string CurrentTradeVolumes { get; private set; }
 
         public BuySellVolumeItem() { }
 
         public BuySellVolumeItem(RealTimeStockItem currentItem, Brush volumeColor)
         {            
             CurrentPrice = currentItem.CurrentPrice;
-            Volumes = currentItem.CurrentTimeVolumes;
+            Volumes = currentItem.LastTradeVolumes;
+            CurrentTradeVolumes = currentItem.CurrentTradeVolumes;
             CurrentPriceColor = currentItem.CurrentPriceValueColor;
             CurrentPriceBackgroundColor = currentItem.CurrentPriceValueBackgroundColor;
             VolumesColor = volumeColor;

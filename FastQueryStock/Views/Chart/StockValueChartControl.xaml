@@ -69,7 +69,7 @@
             <TextBlock Text="{Binding ChangePrice}" Foreground="{Binding ValueColor}" Grid.Row="1" Grid.Column="1" Style="{DynamicResource TooltipTextBlockSytle}"/>
 
             <TextBlock Text="買量" Grid.Row="2" Grid.Column="0" Style="{DynamicResource TooltipTextBlockSytle}"/>
-            <TextBlock Text="{Binding CurrentTimeVolumes}" Grid.Row="2" Grid.Column="1" Style="{DynamicResource TooltipTextBlockSytle}"/>
+            <TextBlock Text="{Binding LastTradeVolumes}" Grid.Row="2" Grid.Column="1" Style="{DynamicResource TooltipTextBlockSytle}"/>
 
             <TextBlock Text="總量" Grid.Row="3" Grid.Column="0" Style="{DynamicResource TooltipTextBlockSytle}"/>
             <TextBlock Text="{Binding Volumes}" Grid.Row="3" Grid.Column="1" Style="{DynamicResource TooltipTextBlockSytle}"/>

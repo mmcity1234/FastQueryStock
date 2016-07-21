@@ -8,6 +8,7 @@ using StockSDK.Ptt;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -370,9 +371,23 @@ namespace FastQueryStock.ViewModels
         {
             try
             {
+                Stopwatch watch = new Stopwatch();
+                watch.Start();
                 StockInfoItem originalStockItem = _favoriteStockService.GetById(args.OriginalItem.Id);
+                watch.Stop();
+                Debug.WriteLine(watch.ElapsedMilliseconds);
+
+                watch.Reset();
+                watch.Start();
                 StockInfoItem targetStockItem = _favoriteStockService.GetById(args.TargetItem.Id);
+                watch.Stop();
+                Debug.WriteLine(watch.ElapsedMilliseconds);
+
+                watch.Reset();
+                watch.Start();
                 _favoriteStockService.ChnageOrder(originalStockItem, targetStockItem);
+                watch.Stop();
+                Debug.WriteLine(watch.ElapsedMilliseconds);
             }
             catch(DataNotFoundException e)
             {

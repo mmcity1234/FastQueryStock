@@ -16,7 +16,7 @@ namespace FastQueryStock.ViewModels
     public class BuySellPricePanelViewModel : BaseViewModel
     {
         private string _title;
-        private string _currentVolumes;
+        private string _lastTradeVolumes;
         private string _StockId;
         private Brush _voluemsColor;
         private RealTimeStockItem _currentStockItem;
@@ -47,15 +47,15 @@ namespace FastQueryStock.ViewModels
             }
         }
         /// <summary>
-        /// 目前當筆成交數
+        /// 最後時間點成交筆數
         /// </summary>
-        public string CurrentVolumes
+        public string LastTradeVolumes
         {
-            get { return _currentVolumes; }
+            get { return _lastTradeVolumes; }
             set
             {
-                _currentVolumes = value;
-                NotifyPropertyChanged("CurrentVolumes");
+                _lastTradeVolumes = value;
+                NotifyPropertyChanged("LastTradeVolumes");
             }
         }
 
@@ -84,7 +84,7 @@ namespace FastQueryStock.ViewModels
         {
             _StockId = stockItem.Id;
             Title = string.Format("{0} ({1}) 五檔掛單", stockItem.Name, stockItem.Id);
-            CurrentVolumes = stockItem.CurrentTimeVolumes;
+            LastTradeVolumes = stockItem.LastTradeVolumes;
             CurrentPrice = stockItem.CurrentPrice;
 
             // set the color of current stock volumes
@@ -96,8 +96,11 @@ namespace FastQueryStock.ViewModels
             PriceListViewModel.Load(stockItem);
 
             // 分時明細
-            if(BuySellVolumeList.FirstOrDefault(x => x.Time == stockItem.LatestTime) == null && stockItem.CurrentTimeVolumes != "0")
+            if (BuySellVolumeList.FirstOrDefault(x => x.Time == stockItem.LatestTime) == null &&
+                stockItem.CurrentTradeVolumes != "0")
+            {
                 BuySellVolumeList.Insert(0, new BuySellVolumeItem(stockItem, VoluemsColor));
+            }
 
             _currentStockItem = stockItem;
         }

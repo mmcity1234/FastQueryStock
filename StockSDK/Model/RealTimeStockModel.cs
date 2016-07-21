@@ -36,7 +36,7 @@ namespace StockSDK.Model
         /// <summary>
         /// 當筆成交量
         /// </summary>
-        public string CurrentTimeVolumes { get; set; }
+        public string LastTradeVolumes { get; set; }
 
         /// <summary>
         /// 漲停價
@@ -96,5 +96,10 @@ namespace StockSDK.Model
         /// 取得或設定上市或上櫃代號
         /// </summary>
         public string ExchangeTypeKey { get; set; }
+
+        /// <summary>
+        /// 取得或設定目前此時間點成交的數量
+        /// </summary>
+        public string CurrentTradeVolumes { get; internal set; }
     }
 }

@@ -62,10 +62,16 @@ namespace StockSDK.Twse
         public string Volumes { get; set; }
 
         /// <summary>
-        /// 當筆成交量
+        /// 當筆成交量，若查詢時間點沒有交易資料則會取得上次最後成交數量
         /// </summary>
         [JsonProperty(PropertyName = "tv")]
-        public string CurrentTimeVolumes { get; set; }
+        public string LastTradeVolumes { get; set; }
+
+        /// <summary>
+        /// 取得此時間點的成交數量
+        /// </summary>
+        [JsonProperty(PropertyName = "s")]
+        public string CurrentTradeVolumes { get; set; }
 
         /// <summary>
         /// 漲停價
@@ -170,11 +176,12 @@ namespace StockSDK.Twse
                 HighestPrice = this.HighestPrice,
                 Id = this.Id,
                 LastTradeTime = this.LastTradeTime,
+                CurrentTradeVolumes = this.CurrentTradeVolumes,
                 LowestPrice = this.LowestPrice,
                 Name = this.Name,
                 OpenPrice = this.OpenPrice,
                 Volumes = this.Volumes,
-                CurrentTimeVolumes = this.CurrentTimeVolumes,
+                LastTradeVolumes = this.LastTradeVolumes,
                 BuyPriceList = this.BuyPriceList,
                 BuyQuantityList = this.BuyQuantityList,
                 LimitDown = this.LimitDown,

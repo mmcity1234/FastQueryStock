@@ -62,7 +62,7 @@
                     <TextBlock  Grid.Column="1" Text="{Binding CurrentPrice}" Margin="10,5,0,5"/>
 
                     <TextBlock Grid.Column="2" Text="單量" Margin="10,5,0,5"/>
-                    <TextBlock Grid.Column="3" Text="{Binding CurrentVolumes}" Foreground="{Binding VoluemsColor}" Margin="10,5,0,5"/>
+                    <TextBlock Grid.Column="3" Text="{Binding LastTradeVolumes}" Foreground="{Binding VoluemsColor}" Margin="10,5,0,5"/>
                 </Grid>
             </Grid>
         </TabItem>
@@ -93,7 +93,7 @@
 
                                 <TextBlock Text="{Binding Time}" Foreground="{Binding SellPriceMarkedColor}" Style="{StaticResource RightAlignmentStyle}"/>
                                 <TextBlock Text="{Binding CurrentPrice}" Grid.Column="1" Foreground="{Binding CurrentPriceColor}" Background="{Binding CurrentPriceBackgroundColor}" Style="{StaticResource RightAlignmentStyle}"/>
-                                <TextBlock Text="{Binding Volumes}" Grid.Column="2" Foreground="{Binding VolumesColor}" Style="{StaticResource RightAlignmentStyle}"/>
+                                <TextBlock Text="{Binding CurrentTradeVolumes}" Grid.Column="2" Foreground="{Binding VolumesColor}" Style="{StaticResource RightAlignmentStyle}"/>
 
                             </Grid>
                         </DataTemplate>

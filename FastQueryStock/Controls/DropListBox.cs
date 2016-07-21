@@ -40,7 +40,8 @@ namespace FastQueryStock.Controls
         }
 
         private void ListBox_PreviewMouseMove(object sender, MouseEventArgs e)
-        {          
+        {
+            e.Handled = false;
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 var lb = sender as ListBox;
