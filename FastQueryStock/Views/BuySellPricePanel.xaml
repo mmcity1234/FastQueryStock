@@ -40,16 +40,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="30"/>
                 </Grid.RowDefinitions>
-                <Grid.Triggers>
-                    <EventTrigger RoutedEvent="Grid.Loaded">
-                        <BeginStoryboard>
-                            <Storyboard >
-                                <DoubleAnimation From="0" To="1" Storyboard.TargetName="stockValueChart" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"></DoubleAnimation>
-                                <PointAnimation  From="1,1" To="0,0" Storyboard.TargetName="stockValueChart" Storyboard.TargetProperty="(UIElement.RenderTransformOrigin)"></PointAnimation>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </EventTrigger>
-                </Grid.Triggers>
+
                 <userControl:BuySellPriceControl DataContext="{Binding PriceListViewModel}" x:Name="stockValueChart" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,5,0,0"/>
                 <Grid Grid.Row="1" HorizontalAlignment="Center">
                     <Grid.ColumnDefinitions>
@@ -62,7 +53,7 @@
                     <TextBlock  Grid.Column="1" Text="{Binding CurrentPrice}" Margin="10,5,0,5"/>
 
                     <TextBlock Grid.Column="2" Text="單量" Margin="10,5,0,5"/>
-                    <TextBlock Grid.Column="3" Text="{Binding LastTradeVolumes}" Foreground="{Binding VoluemsColor}" Margin="10,5,0,5"/>
+                    <TextBlock Grid.Column="3" Text="{Binding LastTradeVolumes}" Foreground="{Binding VolumesColor}" Margin="10,5,0,5"/>
                 </Grid>
             </Grid>
         </TabItem>
@@ -91,7 +82,7 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
-                                <TextBlock Text="{Binding Time}" Foreground="{Binding SellPriceMarkedColor}" Style="{StaticResource RightAlignmentStyle}"/>
+                                <TextBlock Text="{Binding Time}" Style="{StaticResource RightAlignmentStyle}"/>
                                 <TextBlock Text="{Binding CurrentPrice}" Grid.Column="1" Foreground="{Binding CurrentPriceColor}" Background="{Binding CurrentPriceBackgroundColor}" Style="{StaticResource RightAlignmentStyle}"/>
                                 <TextBlock Text="{Binding CurrentTradeVolumes}" Grid.Column="2" Foreground="{Binding VolumesColor}" Style="{StaticResource RightAlignmentStyle}"/>
 

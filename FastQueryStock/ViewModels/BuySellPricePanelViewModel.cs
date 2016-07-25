@@ -15,10 +15,10 @@ namespace FastQueryStock.ViewModels
 {
     public class BuySellPricePanelViewModel : BaseViewModel
     {
-        private string _title;
+        private string _title = string.Empty;
         private string _lastTradeVolumes;
         private string _StockId;
-        private Brush _voluemsColor;
+        private Brush _volumesColor;
         private RealTimeStockItem _currentStockItem;
         private string _currentPrice;
 
@@ -59,13 +59,13 @@ namespace FastQueryStock.ViewModels
             }
         }
 
-        public Brush VoluemsColor
+        public Brush VolumesColor
         {
-            get { return _voluemsColor; }
+            get { return _volumesColor; }
             set
             {
-                _voluemsColor = value;
-                NotifyPropertyChanged("VoluemsColor");
+                _volumesColor = value;
+                NotifyPropertyChanged("VolumesColor");
             }
         }
 
@@ -89,9 +89,9 @@ namespace FastQueryStock.ViewModels
 
             // set the color of current stock volumes
             if (_currentStockItem == null)
-                VoluemsColor = ValueColorHelper.GetVolumeColor(string.Empty, string.Empty, stockItem.BuyPriceList, stockItem.SellPriceList, stockItem.CurrentPrice);
+                VolumesColor = ValueColorHelper.GetVolumeColor(string.Empty, string.Empty, stockItem.BuyPriceList, stockItem.SellPriceList, stockItem.CurrentPrice);
             else
-                VoluemsColor = ValueColorHelper.GetVolumeColor(_currentStockItem.BuyPriceList, _currentStockItem.SellPriceList, stockItem.BuyPriceList, stockItem.SellPriceList, stockItem.CurrentPrice);
+                VolumesColor = ValueColorHelper.GetVolumeColor(_currentStockItem.BuyPriceList, _currentStockItem.SellPriceList, stockItem.BuyPriceList, stockItem.SellPriceList, stockItem.CurrentPrice);
 
             PriceListViewModel.Load(stockItem);
 
@@ -99,7 +99,7 @@ namespace FastQueryStock.ViewModels
             if (BuySellVolumeList.FirstOrDefault(x => x.Time == stockItem.LatestTime) == null &&
                 stockItem.CurrentTradeVolumes != "0")
             {
-                BuySellVolumeList.Insert(0, new BuySellVolumeItem(stockItem, VoluemsColor));
+                BuySellVolumeList.Insert(0, new BuySellVolumeItem(stockItem, VolumesColor));
             }
 
             _currentStockItem = stockItem;

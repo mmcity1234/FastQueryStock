@@ -3,21 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d"
-            >
-    <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter"/>
-        <Style x:Key="LeftAlignmentStyle" TargetType="{x:Type FrameworkElement }">
-            <Setter Property="Margin" Value="0,2,0,2" />
-            <Setter Property="HorizontalAlignment" Value="Left" />
-        </Style>
-        <Style x:Key="RightAlignmentStyle" TargetType="{x:Type FrameworkElement }">
-            <Setter Property="Margin" Value="0,2,0,2" />
-            <Setter Property="HorizontalAlignment" Value="Right" />
-        </Style>
-    </UserControl.Resources>
+             mc:Ignorable="d">
+    
     <StackPanel>
         <ListBox ItemsSource="{Binding BuySellList}">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="BorderThickness" Value="0"/>                    
+                </Style>
+            </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -33,23 +27,23 @@
 
                         <TextBlock Text="{Binding BuyPriceLowestString}" Foreground="{Binding SellPriceMarkedColor}" TextAlignment="Left" VerticalAlignment="Center"/>
 
-                        <TextBlock Text="{Binding BuyPrice}" Grid.Column="1" Foreground="{Binding BuyPriceColor}" Background="{Binding BuyPriceBackgroundColor}" Style="{DynamicResource LeftAlignmentStyle}"/>
+                        <TextBlock Text="{Binding BuyPrice}" Grid.Column="1" Foreground="{Binding BuyPriceColor}" Background="{Binding BuyPriceBackgroundColor}" Margin="0,2,0,2" HorizontalAlignment="Left"/>
 
-                        <Rectangle Width="{Binding BuyQuantityPercentage}" Grid.Column="2" Style="{DynamicResource RightAlignmentStyle}">
+                        <Rectangle Width="{Binding BuyQuantityPercentage}" Grid.Column="2" Margin="0,2,0,2" HorizontalAlignment="Right">
                             <Rectangle.Fill>
                                 <SolidColorBrush Color="#FF86E9FF" Opacity="0.6"/>
                             </Rectangle.Fill>
                         </Rectangle>
-                        <TextBlock Text="{Binding BuyQuantity}" Foreground="#FF646464"  Grid.Column="2" Style="{DynamicResource RightAlignmentStyle}"/>
+                        <TextBlock Text="{Binding BuyQuantity}" Foreground="#FF646464"  Grid.Column="2" Margin="0,2,0,2" HorizontalAlignment="Right"/>
 
-                        <Rectangle Width="{Binding SellQuantityPercentage}" Grid.Column="4" Style="{DynamicResource LeftAlignmentStyle}">
+                        <Rectangle Width="{Binding SellQuantityPercentage}" Grid.Column="4" Margin="0,2,0,2" HorizontalAlignment="Left">
                             <Rectangle.Fill>
                                 <SolidColorBrush Color="#FF86E9FF" Opacity="0.6"/>
                             </Rectangle.Fill>
                         </Rectangle>
-                        <TextBlock Text="{Binding SellQuantity}" Foreground="#FF646464"  Grid.Column="4" Style="{DynamicResource LeftAlignmentStyle}"/>
+                        <TextBlock Text="{Binding SellQuantity}" Foreground="#FF646464"  Grid.Column="4" Margin="0,2,0,2" HorizontalAlignment="Left"/>
 
-                        <TextBlock Text="{Binding SellPrice}" Foreground="{Binding SellPriceColor}" Background="{Binding SellPriceBackgroundColor}" Grid.Column="5" Style="{DynamicResource RightAlignmentStyle}"/>
+                        <TextBlock Text="{Binding SellPrice}" Foreground="{Binding SellPriceColor}" Background="{Binding SellPriceBackgroundColor}" Grid.Column="5" Margin="0,2,0,2" HorizontalAlignment="Right"/>
 
                         <TextBlock Text="{Binding SellPriceHighestString}" Foreground="{Binding SellPriceMarkedColor}" Grid.Column="6" TextAlignment="Right" VerticalAlignment="Center"/>
 

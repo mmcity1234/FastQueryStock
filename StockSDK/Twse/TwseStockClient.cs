@@ -50,11 +50,11 @@ namespace StockSDK.Twse
             try
             {
                 string queryStr = string.Format(QUERY_URI, stockParm, GetJavaScriptTimeTick());
-                Debug.WriteLine(DateTime.Now + " : " + queryStr);
+                // Debug.WriteLine(DateTime.Now + " : " + queryStr);
                 string responseJson = string.Empty;
 
                 responseJson = await Http.GetAsync(queryStr, true, session.Cookie);
-                Debug.WriteLine(DateTime.Now + " : " + responseJson);
+                // Debug.WriteLine(DateTime.Now + " : " + responseJson);
                 var results = JsonConverter.DeserializeFrom<RootObject<StockData>>(responseJson);
                 if (results.Result == SUCCESS)
                 {
