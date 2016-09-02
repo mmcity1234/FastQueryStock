@@ -97,7 +97,7 @@ namespace FastQueryStock.ViewModels
 
             // 分時明細
             if (BuySellVolumeList.FirstOrDefault(x => x.Time == stockItem.LatestTime) == null &&
-                stockItem.CurrentTradeVolumes != "0")
+                !string.IsNullOrEmpty(stockItem.CurrentTradeVolumes) && stockItem.CurrentTradeVolumes != "0")
             {
                 BuySellVolumeList.Insert(0, new BuySellVolumeItem(stockItem, VolumesColor));
             }

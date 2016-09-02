@@ -34,7 +34,6 @@ namespace FastQueryStock.ViewModels
         private IPttStockQueryService _pttService;
         private RealTimeStockItem _selectedStockItem;
         private bool _enableDeleteButton;
-        private bool _isSafeMode;
         private bool _isUpdateDbLoading;
         private bool _enableUpdateDbButton = true;
         private bool _isChengWayeEnable;
@@ -61,6 +60,16 @@ namespace FastQueryStock.ViewModels
             }
         }
 
+        public int TimeInterval
+        {
+            get { return _timeInterval; }
+            set
+            {
+                _timeInterval = value;
+                NotifyPropertyChanged("TimeInterval");
+            }
+        }
+
         /// <summary>
         /// Input the number to add the stock
         /// </summary>
@@ -74,15 +83,6 @@ namespace FastQueryStock.ViewModels
             }
         }
 
-        public int TimeInterval
-        {
-            get { return _timeInterval; }
-            set
-            {
-                _timeInterval = value;
-                NotifyPropertyChanged("TimeInterval");
-            }
-        }
         /// <summary>
         /// Is auto refresh all of the stock data
         /// </summary>
@@ -96,15 +96,7 @@ namespace FastQueryStock.ViewModels
                 NotifyPropertyChanged("IsAutoRefresh");
             }
         }
-        public bool IsSafeMode
-        {
-            get { return _isSafeMode; }
-            set
-            {
-                _isSafeMode = value;
-                NotifyPropertyChanged("IsSafeMode");
-            }
-        }
+    
 
         public RealTimeStockItem SelectedStockItem
         {
@@ -188,18 +180,18 @@ namespace FastQueryStock.ViewModels
             StockItemDoubleClickCommand = new DelegateCommand<RealTimeStockItem>(StockItem_DoubleClick);
             StockItemMovedCommand = new DelegateCommand<ItemMoveEventArgs<RealTimeStockItem>>(StockItem_ItemMoved);
             ChengWayeModelCommand = new DelegateCommand(ChengWayeMode_Checked);
+
             TimeInterval = 10;
             IsAutoRefresh = true;
+#if DEBUG
+            IsChengWayeEnable = true;
+#endif
+
 
             MenuList = new ObservableCollection<StockMenuItem>();
             MenuList.Add(new StockMenuItem { Content = "股價走勢", Command = new DelegateCommand<RealTimeStockItem>(StockItem_ShowChartDialog) });
             MenuList.Add(new StockMenuItem { Content = "五檔明細", Command = new DelegateCommand<RealTimeStockItem>(StockItem_ShowSellPriceDialog) });
-
-
-#if DEBUG
-            IsSafeMode = true;
-            IsChengWayeEnable = true;
-#endif
+            
             _localStockService.InitializeData();
 
         }

@@ -140,7 +140,7 @@ namespace FastQueryStock.ViewModels
             }
         }
         /// <summary>
-        /// 當筆成交量
+        /// 最後時間點有成交的數量
         /// </summary>
         public string LastTradeVolumes
         {
